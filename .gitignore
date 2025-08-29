@@ -17,3 +17,7 @@ ehthumbs_vista.db
 *.suo
 *.user
 *.sln.docstates
+
+# Other
+node_modules/
+
