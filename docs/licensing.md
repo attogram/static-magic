@@ -1,6 +1,6 @@
 # Licensing Information
 
-This repository is distributed under the MIT License, the full text of which is available in the `LICENSE` file.
+This repository is distributed under the MIT License, the full text of which is available in the [`LICENSE`](../LICENSE) file.
 
 ## What is the MIT License?
 
@@ -10,7 +10,7 @@ The MIT License is a permissive free software license originating at the Massach
 
 ## How to Use the `LICENSE` File
 
-The included `LICENSE` file contains a copyright line for the `base` template itself:
+The included [`LICENSE`](../LICENSE) file contains a copyright line for the `base` template itself:
 
 `Copyright (c) 2025 Attogram Project`
 

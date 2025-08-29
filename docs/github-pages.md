@@ -10,18 +10,18 @@ Before the workflow can deploy your site, you must configure your repository to 
 2.  **Select Pages:** In the left-hand sidebar, click on **Pages**.
 3.  **Set the Deployment Source:** Under the "Build and deployment" section, you will see a **Source** option. Select **"GitHub Actions"** from the dropdown menu.
 
-After you select "GitHub Actions", the UI may present you with suggestions for common workflows (e.g., "GitHub Pages Jekyll", "Static HTML"). **You can ignore these suggestions.** This repository already contains a custom, pre-configured workflow (`.github/workflows/pages.yml`) that will be used automatically.
+After you select "GitHub Actions", the UI may present you with suggestions for common workflows (e.g., "GitHub Pages Jekyll", "Static HTML"). **You can ignore these suggestions.** This repository already contains a custom, pre-configured workflow ([`.github/workflows/pages.yml`](../.github/workflows/pages.yml)) that will be used automatically.
 
-> **Note:** If you do not perform this setup step, the `pages.yml` workflow will fail with a "Get Pages site failed" or "HttpError: Not Found" error.
+> **Note:** If you do not perform this setup step, the [`pages.yml`](../.github/workflows/pages.yml) workflow will fail with a "Get Pages site failed" or "HttpError: Not Found" error.
 
 ## How It Works
 
-The site is built and deployed by the `.github/workflows/pages.yml` workflow. Here's a summary of the process:
+The site is built and deployed by the [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) workflow. Here's a summary of the process:
 
 1.  **Trigger:** The workflow runs automatically on every push to the `main` branch.
 2.  **Jekyll Build:** It uses the standard `jekyll-build-pages` GitHub Action to build a static website.
-3.  **Homepage:** It is configured to use the root `README.md` file as the content for the homepage (`index.html`) of the site.
-4.  **Styling:** The `_config.yml` file in the root of the repository specifies the `jekyll-theme-primer` theme, which gives the site the standard GitHub look and feel.
+3.  **Homepage:** It is configured to use the root [`README.md`](../README.md) file as the content for the homepage (`index.html`) of the site.
+4.  **Styling:** The [`_config.yml`](../_config.yml) file in the root of the repository specifies the `jekyll-theme-primer` theme, which gives the site the standard GitHub look and feel.
 5.  **Deployment:** The built static site is then deployed to GitHub Pages.
 
 ## Accessing the Site

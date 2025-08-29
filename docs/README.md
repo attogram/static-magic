@@ -6,6 +6,7 @@ This directory contains the documentation for the `base` project.
 - **[Docker-based Development Environment](./docker.md)**: Instructions on how to use the included Docker setup for a consistent development environment.
 - **[GitHub Codespaces](./github-codespaces.md)**: A guide to using GitHub Codespaces for a cloud-based development experience.
 - **[GitHub Pages Site](./github-pages.md)**: Information on how the project's documentation is automatically built and deployed as a website.
+- **[Use Case: A Publishing Platform](./use-case-publishing.md)**: A detailed guide on using this repository as a platform to create and publish your own website.
 - **[GitHub Workflows](./github-workflows.md)**: An explanation of the CI/CD workflows for linting, testing, and releasing.
 - **[Licensing Information](./licensing.md)**: Details on the MIT License and how to properly attribute copyright.
 - **[Deploying to Render.com](./render.md)**: Instructions for deploying the project to the Render.com platform.
