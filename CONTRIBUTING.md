@@ -6,7 +6,7 @@ This repository is a template. The contribution guide below is a generic placeho
 
 ## Getting Started
 
-- Ensure you have read the project's `README.md`.
+- Ensure you have read the project's [`README.md`](./README.md).
 - If you are proposing a new feature, open an issue first to discuss it.
 
 ## Making Changes
