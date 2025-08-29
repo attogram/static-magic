@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Theme Switcher (Light/Dark) - Getting Interactive with GitHub Pages
+    </title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="theme-intro">
+          <h2>Theme Switcher (Light/Dark Mode)</h2>
+          <p>
+            A theme switcher is a fantastic feature that respects user
+            preferences and improves accessibility. It's surprisingly easy to
+            implement on a static site using CSS variables and a little bit of
+            JavaScript to handle <code>localStorage</code>.
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <p>
+            The live demo is right here on this page! Look for the "Dark Mode" /
+            "Light Mode" button, likely in the top-right corner. Click it to
+            toggle the theme. Your preference will be saved and applied
+            automatically on your next visit.
+          </p>
+          <div
+            style="
+              padding: 20px;
+              border: 2px dashed var(--border-color);
+              border-radius: 5px;
+              text-align: center;
+            "
+          >
+            This is a sample container to demonstrate the theme change.
+          </div>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            The implementation involves three parts: CSS variables for the
+            themes, a JavaScript function to toggle the theme and save the
+            preference, and a button in your HTML.
+          </p>
+
+          <h4>1. The CSS</h4>
+          <p>
+            In your main stylesheet (<code>style.css</code>), define two sets of
+            color variables. One for the default (light) theme, and one for the
+            dark theme, triggered by a class on the <code>body</code> element.
+          </p>
+          <pre><code>/* Light Theme (Default) */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --header-bg: #f8f9fa;
+    /* ... other light theme variables */
+}
+
+/* Dark Theme */
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --header-bg: #1f1f1f;
+    /* ... other dark theme variables */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}</code></pre>
+
+          <h4>2. The HTML</h4>
+          <p>
+            Place a button in your HTML file. This button will be used to
+            trigger the theme change.
+          </p>
+          <pre><code>&lt;button id="theme-switcher" class="btn"&gt;Dark Mode&lt;/button&gt;</code></pre>
+
+          <h4>3. The JavaScript</h4>
+          <p>
+            This script checks for a saved theme in <code>localStorage</code>,
+            applies it on page load, and adds an event listener to the button to
+            toggle the theme.
+          </p>
+          <pre><code>document.addEventListener('DOMContentLoaded', () => {
+    const themeSwitcher = document.getElementById('theme-switcher');
+    const currentTheme = localStorage.getItem('theme');
+
+    // Apply saved theme or OS preference
+    if (currentTheme) {
+        document.body.classList.toggle('dark-mode', currentTheme === 'dark');
+        themeSwitcher.textContent = currentTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark-mode');
+        themeSwitcher.textContent = 'Light Mode';
+    } else {
+        themeSwitcher.textContent = 'Dark Mode';
+    }
+
+    // Theme switcher button event listener
+    themeSwitcher.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        let theme = 'light';
+        if (document.body.classList.contains('dark-mode')) {
+            theme = 'dark';
+        }
+        localStorage.setItem('theme', theme);
+        themeSwitcher.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    });
+});</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+  </body>
+</html>

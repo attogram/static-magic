@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Number Guessing Game - Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .game-container {
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+      }
+      #guess-input {
+        width: 100px;
+        padding: 10px;
+        font-size: 1.2rem;
+        text-align: center;
+      }
+      #guess-submit {
+        padding: 10px 20px;
+      }
+      #feedback {
+        font-size: 1.2rem;
+        margin-top: 20px;
+        min-height: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Number Guessing Game</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Games</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="game-container">
+          <p>I'm thinking of a number between 1 and 100.</p>
+          <form id="guess-form">
+            <input type="number" id="guess-input" min="1" max="100" required />
+            <button type="submit" id="guess-submit" class="btn">Guess</button>
+          </form>
+          <p id="feedback"></p>
+          <button id="restart-btn" class="btn" style="display: none">
+            Play Again
+          </button>
+        </div>
+        <section id="explanation" style="margin-top: 40px">
+          <h3>How it Works</h3>
+          <p>
+            The computer generates a random number between 1 and 100 using
+            <code>Math.random()</code>. The player submits their guess via a
+            form. The game then compares the guess to the secret number and
+            provides feedback ('Too high!', 'Too low!', or 'You got it!'). The
+            input form is disabled once the correct number is guessed, and a
+            'Play Again' button appears.
+          </p>
+          <h4>The Code</h4>
+          <pre><code>&lt;!-- HTML --&gt;
+&lt;p&gt;I'm thinking of a number between 1 and 100.&lt;/p&gt;
+&lt;form id="guess-form"&gt;
+    &lt;input type="number" id="guess-input" min="1" max="100" required&gt;
+    &lt;button type="submit" id="guess-submit" class="btn"&gt;Guess&lt;/button&gt;
+&lt;/form&gt;
+&lt;p id="feedback"&gt;&lt;/p&gt;
+&lt;button id="restart-btn" class="btn" style="display: none;"&gt;Play Again&lt;/button&gt;
+
+&lt;!-- JavaScript --&gt;
+const guessInput = document.getElementById('guess-input');
+// ... game logic ...
+</code></pre>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+    <script>
+      const guessForm = document.getElementById("guess-form");
+      const guessInput = document.getElementById("guess-input");
+      const guessSubmit = document.getElementById("guess-submit");
+      const feedback = document.getElementById("feedback");
+      const restartBtn = document.getElementById("restart-btn");
+
+      let secretNumber;
+      let attempts;
+
+      function newGame() {
+        secretNumber = Math.floor(Math.random() * 100) + 1;
+        attempts = 0;
+        feedback.textContent = "";
+        guessInput.disabled = false;
+        guessSubmit.disabled = false;
+        guessInput.value = "";
+        restartBtn.style.display = "none";
+        guessInput.focus();
+      }
+
+      function handleGuess(e) {
+        e.preventDefault();
+        const userGuess = parseInt(guessInput.value, 10);
+
+        if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+          feedback.textContent =
+            "Please enter a valid number between 1 and 100.";
+          return;
+        }
+
+        attempts++;
+
+        if (userGuess === secretNumber) {
+          feedback.textContent = `You got it in ${attempts} attempts! The number was ${secretNumber}.`;
+          feedback.style.color = "green";
+          endGame();
+        } else if (userGuess < secretNumber) {
+          feedback.textContent = "Too low! Try again.";
+          feedback.style.color = "var(--text-color)";
+        } else {
+          feedback.textContent = "Too high! Try again.";
+          feedback.style.color = "var(--text-color)";
+        }
+        guessInput.value = "";
+        guessInput.focus();
+      }
+
+      function endGame() {
+        guessInput.disabled = true;
+        guessSubmit.disabled = true;
+        restartBtn.style.display = "inline-block";
+      }
+
+      guessForm.addEventListener("submit", handleGuess);
+      restartBtn.addEventListener("click", newGame);
+
+      newGame();
+    </script>
+  </body>
+</html>

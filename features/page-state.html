@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page State Memory - Getting Interactive with GitHub Pages</title>
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      #state-form label {
+        display: block;
+        margin-top: 15px;
+      }
+      #volume-value {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="state-intro">
+          <h2>Remembering Page State</h2>
+          <p>
+            A great user experience often means not forgetting what the user was
+            doing. Using the browser's storage APIs, you can easily save the
+            state of UI elements, so that if the user reloads the page or comes
+            back later, their settings and input are preserved.
+          </p>
+          <ul>
+            <li>
+              <strong><code>localStorage</code></strong
+              >: Stores data with no expiration date. It will persist until the
+              user manually clears their browser cache.
+            </li>
+            <li>
+              <strong><code>sessionStorage</code></strong
+              >: Stores data for one session only. The data is lost when the
+              browser tab is closed.
+            </li>
+          </ul>
+          <p>
+            For this demo, we'll use <code>localStorage</code> to make the state
+            persistent across visits.
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <p>
+            Change the values in the form below, then reload the page. Your
+            changes will be remembered.
+          </p>
+          <form id="state-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter your name" />
+
+            <label for="volume"
+              >Volume: <span id="volume-value">50</span></label
+            >
+            <input type="range" id="volume" min="0" max="100" />
+
+            <label>
+              <input type="checkbox" id="notifications" />
+              Enable notifications
+            </label>
+          </form>
+          <button id="clear-state-btn" class="btn" style="margin-top: 20px">
+            Clear Saved State
+          </button>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            The logic involves listening for changes on the form inputs and
+            saving the values to <code>localStorage</code>. On page load, we
+            check for saved values and apply them.
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;form id="state-form"&gt;
+    &lt;label for="username"&gt;Username:&lt;/label&gt;
+    &lt;input type="text" id="username"&gt;
+
+    &lt;label for="volume"&gt;Volume: &lt;span id="volume-value"&gt;50&lt;/span&gt;&lt;/label&gt;
+    &lt;input type="range" id="volume" min="0" max="100"&gt;
+
+    &lt;label&gt;
+        &lt;input type="checkbox" id="notifications"&gt;
+        Enable notifications
+    &lt;/label&gt;
+&lt;/form&gt;
+&lt;button id="clear-state-btn" class="btn"&gt;Clear Saved State&lt;/button&gt;</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>const form = document.getElementById('state-form');
+const usernameInput = document.getElementById('username');
+const volumeSlider = document.getElementById('volume');
+const volumeValue = document.getElementById('volume-value');
+const notificationsCheckbox = document.getElementById('notifications');
+const clearBtn = document.getElementById('clear-state-btn');
+
+const storageKey = 'formState';
+
+// Function to save state
+function saveState() {
+    const state = {
+        username: usernameInput.value,
+        volume: volumeSlider.value,
+        notifications: notificationsCheckbox.checked
+    };
+    localStorage.setItem(storageKey, JSON.stringify(state));
+}
+
+// Function to load state
+function loadState() {
+    const savedState = JSON.parse(localStorage.getItem(storageKey));
+    if (savedState) {
+        usernameInput.value = savedState.username || '';
+        volumeSlider.value = savedState.volume || 50;
+        notificationsCheckbox.checked = savedState.notifications || false;
+    }
+    volumeValue.textContent = volumeSlider.value;
+}
+
+// Event Listeners
+form.addEventListener('input', (e) => {
+    if(e.target.id === 'volume') {
+        volumeValue.textContent = e.target.value;
+    }
+    saveState();
+});
+
+clearBtn.addEventListener('click', () => {
+    localStorage.removeItem(storageKey);
+    window.location.reload();
+});
+
+// Load the state when the page loads
+loadState();
+</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("state-form");
+        const usernameInput = document.getElementById("username");
+        const volumeSlider = document.getElementById("volume");
+        const volumeValue = document.getElementById("volume-value");
+        const notificationsCheckbox = document.getElementById("notifications");
+        const clearBtn = document.getElementById("clear-state-btn");
+
+        const storageKey = "formStateDemo";
+
+        // Function to save state
+        function saveState() {
+          const state = {
+            username: usernameInput.value,
+            volume: volumeSlider.value,
+            notifications: notificationsCheckbox.checked,
+          };
+          localStorage.setItem(storageKey, JSON.stringify(state));
+        }
+
+        // Function to load state
+        function loadState() {
+          const savedState = JSON.parse(localStorage.getItem(storageKey));
+          if (savedState) {
+            usernameInput.value = savedState.username || "";
+            volumeSlider.value = savedState.volume || 50;
+            notificationsCheckbox.checked = savedState.notifications || false;
+          }
+          // Update volume display regardless of saved state
+          volumeValue.textContent = volumeSlider.value;
+        }
+
+        // Event Listeners
+        form.addEventListener("input", (e) => {
+          if (e.target.id === "volume") {
+            volumeValue.textContent = e.target.value;
+          }
+          saveState();
+        });
+
+        clearBtn.addEventListener("click", () => {
+          localStorage.removeItem(storageKey);
+          // A reload is a simple way to reset the form to its default state
+          window.location.reload();
+        });
+
+        // Load the state when the page loads
+        loadState();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock, Paper, Scissors - Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .game-container {
+        max-width: 600px;
+        margin: auto;
+        text-align: center;
+      }
+      .choices button {
+        font-size: 2rem;
+        margin: 0 10px;
+      }
+      #result {
+        font-size: 1.5rem;
+        margin-top: 20px;
+        min-height: 2rem;
+      }
+      #score {
+        font-size: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Rock, Paper, Scissors</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Games</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="game-container">
+          <p>Choose your weapon!</p>
+          <div class="choices">
+            <button class="btn" data-choice="Rock">✊</button>
+            <button class="btn" data-choice="Paper">✋</button>
+            <button class="btn" data-choice="Scissors">✌️</button>
+          </div>
+          <div id="result"></div>
+          <p id="score">Player: 0 - Computer: 0</p>
+        </div>
+        <section id="explanation" style="margin-top: 40px">
+          <h3>How it Works</h3>
+          <p>
+            The player clicks one of the three buttons. The computer's choice is
+            generated randomly from the three options. A function then compares
+            the two choices to determine a winner based on the classic rules:
+            Rock beats Scissors, Scissors beats Paper, and Paper beats Rock. The
+            scores are then updated.
+          </p>
+          <h4>The Code</h4>
+          <pre><code>&lt;!-- HTML --&gt;
+&lt;div class="choices"&gt;
+    &lt;button class="btn" data-choice="Rock"&gt;✊&lt;/button&gt;
+    &lt;button class="btn" data-choice="Paper"&gt;✋&lt;/button&gt;
+    &lt;button class="btn" data-choice="Scissors"&gt;✌️&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id="result"&gt;&lt;/div&gt;
+&lt;p id="score"&gt;Player: 0 - Computer: 0&lt;/p&gt;
+
+&lt;!-- JavaScript --&gt;
+const choiceButtons = document.querySelectorAll('.choices button');
+// ... game logic ...
+</code></pre>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+    <script>
+      const choiceButtons = document.querySelectorAll(".choices button");
+      const resultDisplay = document.getElementById("result");
+      const scoreDisplay = document.getElementById("score");
+
+      const choices = ["Rock", "Paper", "Scissors"];
+      let playerScore = 0;
+      let computerScore = 0;
+
+      function getComputerChoice() {
+        const randomIndex = Math.floor(Math.random() * choices.length);
+        return choices[randomIndex];
+      }
+
+      function playGame(playerChoice) {
+        const computerChoice = getComputerChoice();
+        let result = "";
+
+        if (playerChoice === computerChoice) {
+          result = `It's a tie! Both chose ${playerChoice}.`;
+        } else if (
+          (playerChoice === "Rock" && computerChoice === "Scissors") ||
+          (playerChoice === "Scissors" && computerChoice === "Paper") ||
+          (playerChoice === "Paper" && computerChoice === "Rock")
+        ) {
+          playerScore++;
+          result = `You win! ${playerChoice} beats ${computerChoice}.`;
+        } else {
+          computerScore++;
+          result = `You lose! ${computerChoice} beats ${playerChoice}.`;
+        }
+
+        resultDisplay.textContent = result;
+        scoreDisplay.textContent = `Player: ${playerScore} - Computer: ${computerScore}`;
+      }
+
+      choiceButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const playerChoice = button.getAttribute("data-choice");
+          playGame(playerChoice);
+        });
+      });
+    </script>
+  </body>
+</html>

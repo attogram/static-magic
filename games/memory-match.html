@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Match - Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .game-container {
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+      }
+      #memory-game-board {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin: 20px auto;
+        perspective: 1000px;
+      }
+      .card {
+        width: 100px;
+        height: 100px;
+        background-color: var(--nav-bg);
+        border-radius: 5px;
+        cursor: pointer;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s;
+      }
+      .card.flipped,
+      .card.matched {
+        transform: rotateY(180deg);
+      }
+      .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        border-radius: 5px;
+      }
+      .card-front {
+        background-color: var(--nav-link);
+      }
+      .card-back {
+        background-color: var(--nav-bg);
+        transform: rotateY(180deg);
+      }
+      .card.matched .card-back {
+        background-color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Memory Match Game</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Games</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="game-container">
+          <p id="game-status">Moves: 0</p>
+          <div id="memory-game-board"></div>
+          <button id="restart-btn" class="btn" style="margin-top: 20px">
+            New Game
+          </button>
+        </div>
+        <section id="explanation" style="margin-top: 40px">
+          <h3>How it Works</h3>
+          <p>
+            This is a classic card matching memory game. A deck of paired cards
+            is shuffled and laid out face down. The player flips two cards at a
+            time. If they match, they remain face up. If not, they are flipped
+            back over. The goal is to find all the pairs.
+          </p>
+          <h4>The Code</h4>
+          <pre><code>&lt;!-- HTML --&gt;
+&lt;p id="game-status"&gt;Moves: 0&lt;/p&gt;
+&lt;div id="memory-game-board"&gt;&lt;/div&gt;
+&lt;button id="restart-btn" class="btn"&gt;New Game&lt;/button&gt;
+
+&lt;!-- CSS for card flip --&gt;
+#memory-game-board { perspective: 1000px; }
+.card {
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+.card.flipped, .card.matched { transform: rotateY(180deg); }
+.card-face {
+    position: absolute;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+}
+.card-back { transform: rotateY(180deg); }
+
+&lt;!-- JavaScript --&gt;
+const gameBoard = document.getElementById('memory-game-board');
+// ... game logic ...
+</code></pre>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+    <script>
+      const gameBoard = document.getElementById("memory-game-board");
+      const statusDisplay = document.getElementById("game-status");
+      const restartBtn = document.getElementById("restart-btn");
+
+      const cardEmojis = ["😀", "😎", "😂", "🥳", "😍", "🤔", "🤯", "😱"];
+      let cards = [...cardEmojis, ...cardEmojis];
+      let flippedCards = [];
+      let matchedPairs = 0;
+      let moves = 0;
+      let boardLocked = false;
+
+      function shuffle(array) {
+        array.sort(() => Math.random() - 0.5);
+      }
+
+      function createBoard() {
+        gameBoard.innerHTML = "";
+        shuffle(cards);
+        matchedPairs = 0;
+        moves = 0;
+        boardLocked = false;
+        statusDisplay.textContent = `Moves: 0`;
+
+        cards.forEach((emoji) => {
+          const card = document.createElement("div");
+          card.classList.add("card");
+          card.dataset.emoji = emoji;
+
+          card.innerHTML = `
+                    <div class="card-face card-front"></div>
+                    <div class="card-face card-back">${emoji}</div>
+                `;
+
+          card.addEventListener("click", handleCardClick);
+          gameBoard.appendChild(card);
+        });
+      }
+
+      function handleCardClick(e) {
+        if (boardLocked) return;
+        const clickedCard = e.currentTarget;
+        if (clickedCard.classList.contains("flipped")) return;
+
+        clickedCard.classList.add("flipped");
+        flippedCards.push(clickedCard);
+
+        if (flippedCards.length === 2) {
+          boardLocked = true;
+          moves++;
+          statusDisplay.textContent = `Moves: ${moves}`;
+          checkForMatch();
+        }
+      }
+
+      function checkForMatch() {
+        const [card1, card2] = flippedCards;
+        if (card1.dataset.emoji === card2.dataset.emoji) {
+          card1.classList.add("matched");
+          card2.classList.add("matched");
+          matchedPairs++;
+          flippedCards = [];
+          boardLocked = false;
+          if (matchedPairs === cardEmojis.length) {
+            setTimeout(() => {
+              statusDisplay.textContent = `You won in ${moves} moves!`;
+            }, 500);
+          }
+        } else {
+          setTimeout(() => {
+            card1.classList.remove("flipped");
+            card2.classList.remove("flipped");
+            flippedCards = [];
+            boardLocked = false;
+          }, 1000);
+        }
+      }
+
+      restartBtn.addEventListener("click", createBoard);
+      createBoard();
+    </script>
+  </body>
+</html>

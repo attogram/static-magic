@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typing Speed Test - Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .game-container {
+        max-width: 700px;
+        margin: auto;
+      }
+      #sample-text {
+        background-color: var(--nav-bg);
+        padding: 20px;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        user-select: none;
+      }
+      #typing-input {
+        width: 100%;
+        height: 150px;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+      #results {
+        font-size: 1.5rem;
+        margin-top: 20px;
+      }
+      #sample-text .correct {
+        color: green;
+      }
+      #sample-text .incorrect {
+        color: red;
+        background-color: #ff000020;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Typing Speed Test</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Games</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="game-container">
+          <p>Type the text below as quickly and accurately as you can.</p>
+          <div id="sample-text"></div>
+          <textarea
+            id="typing-input"
+            placeholder="Start typing here..."
+          ></textarea>
+          <div id="results"></div>
+          <button id="restart-btn" class="btn" style="margin-top: 20px">
+            New Test
+          </button>
+        </div>
+        <section id="explanation" style="margin-top: 40px">
+          <h3>How it Works</h3>
+          <p>
+            A random snippet of text is displayed. When the user starts typing
+            in the text area, a timer begins. On each input, the typed text is
+            compared to the sample text. When the typed text's length matches
+            the sample text's length, the test ends. The Words Per Minute (WPM)
+            is calculated based on the number of correctly typed characters and
+            the elapsed time. (WPM is conventionally calculated as
+            `(character_count / 5) / time_in_minutes`).
+          </p>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+    <script>
+      const sampleTextDisplay = document.getElementById("sample-text");
+      const typingInput = document.getElementById("typing-input");
+      const resultsDisplay = document.getElementById("results");
+      const restartBtn = document.getElementById("restart-btn");
+
+      const textSnippets = [
+        "The quick brown fox jumps over the lazy dog.",
+        "Never underestimate the power of a good book.",
+        "Technology has revolutionized the way we live and work.",
+        "The sun always shines brightest after the rain.",
+        "Creativity is intelligence having fun.",
+      ];
+
+      let currentText = "";
+      let startTime;
+      let timerInterval;
+
+      function startNewTest() {
+        resultsDisplay.textContent = "";
+        typingInput.value = "";
+        typingInput.disabled = false;
+        currentText =
+          textSnippets[Math.floor(Math.random() * textSnippets.length)];
+        sampleTextDisplay.innerHTML = "";
+        currentText.split("").forEach((char) => {
+          const charSpan = document.createElement("span");
+          charSpan.textContent = char;
+          sampleTextDisplay.appendChild(charSpan);
+        });
+        startTime = null;
+        clearInterval(timerInterval);
+        typingInput.focus();
+      }
+
+      function checkTyping() {
+        if (!startTime) {
+          startTime = new Date();
+          timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        const typedText = typingInput.value;
+        const textChars = sampleTextDisplay.querySelectorAll("span");
+        let correctCount = 0;
+
+        textChars.forEach((charSpan, index) => {
+          const char = typedText[index];
+          if (char == null) {
+            charSpan.classList.remove("correct", "incorrect");
+          } else if (char === charSpan.textContent) {
+            charSpan.classList.add("correct");
+            charSpan.classList.remove("incorrect");
+            correctCount++;
+          } else {
+            charSpan.classList.add("incorrect");
+            charSpan.classList.remove("correct");
+          }
+        });
+
+        if (typedText.length === currentText.length) {
+          endTest(correctCount);
+        }
+      }
+
+      function updateTimer() {
+        if (startTime) {
+          const elapsedTime = Math.floor((new Date() - startTime) / 1000);
+          resultsDisplay.textContent = `Time: ${elapsedTime}s`;
+        }
+      }
+
+      function endTest(correctCount) {
+        clearInterval(timerInterval);
+        typingInput.disabled = true;
+        const elapsedTime = (new Date() - startTime) / 1000;
+        const wpm = Math.round(correctCount / 5 / (elapsedTime / 60));
+        resultsDisplay.textContent = `Finished! Your WPM: ${wpm}. Accuracy: ${((correctCount / currentText.length) * 100).toFixed(2)}%`;
+      }
+
+      typingInput.addEventListener("input", checkTyping);
+      restartBtn.addEventListener("click", startNewTest);
+      startNewTest();
+    </script>
+  </body>
+</html>

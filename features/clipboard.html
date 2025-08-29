@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clipboard Interaction - Getting Interactive with GitHub Pages</title>
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      #copy-text {
+        width: 100%;
+        box-sizing: border-box;
+        height: 100px;
+      }
+      #copy-feedback {
+        margin-top: 10px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="clipboard-intro">
+          <h2>Clipboard Interaction with the Clipboard API</h2>
+          <p>
+            A "Copy to Clipboard" button is a small but incredibly useful
+            feature. The modern way to implement this is with the asynchronous
+            <code>navigator.clipboard</code> API. It's more secure and powerful
+            than the old <code>document.execCommand('copy')</code> method.
+          </p>
+          <p>
+            The API is promise-based, making it easy to work with and provide
+            feedback to the user upon success or failure. Note that this API
+            requires a secure context (like HTTPS), which is automatically
+            provided by GitHub Pages.
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <textarea id="copy-text">
+This is some text to be copied. You can change it!</textarea
+          >
+          <button id="copy-btn" class="btn">Copy Text</button>
+          <div id="copy-feedback"></div>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            The JavaScript is straightforward: get the text, call the API, and
+            handle the promise.
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;textarea id="copy-text"&gt;Some text to copy.&lt;/textarea&gt;
+&lt;button id="copy-btn" class="btn"&gt;Copy Text&lt;/button&gt;
+&lt;div id="copy-feedback"&gt;&lt;/div&gt;</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>const copyText = document.getElementById('copy-text');
+const copyBtn = document.getElementById('copy-btn');
+const copyFeedback = document.getElementById('copy-feedback');
+
+copyBtn.addEventListener('click', () => {
+    const textToCopy = copyText.value;
+
+    if (!navigator.clipboard) {
+        copyFeedback.textContent = 'Clipboard API not available.';
+        return;
+    }
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        copyFeedback.textContent = 'Copied to clipboard!';
+        copyFeedback.style.color = 'green';
+
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+
+        setTimeout(() => {
+            copyFeedback.textContent = '';
+            copyBtn.textContent = originalText;
+        }, 2000);
+    }).catch(err => {
+        copyFeedback.textContent = `Failed to copy: ${err}`;
+        copyFeedback.style.color = 'red';
+    });
+});
+</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <script>
+      const copyText = document.getElementById("copy-text");
+      const copyBtn = document.getElementById("copy-btn");
+      const copyFeedback = document.getElementById("copy-feedback");
+
+      copyBtn.addEventListener("click", () => {
+        const textToCopy = copyText.value;
+
+        if (!navigator.clipboard) {
+          copyFeedback.textContent =
+            "Clipboard API not available in this browser.";
+          copyFeedback.style.color = "red";
+          return;
+        }
+
+        navigator.clipboard
+          .writeText(textToCopy)
+          .then(() => {
+            copyFeedback.textContent = "Copied to clipboard!";
+            copyFeedback.style.color = "green";
+
+            // Give visual feedback on the button
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = "Copied!";
+            copyBtn.disabled = true;
+
+            setTimeout(() => {
+              copyFeedback.textContent = "";
+              copyBtn.textContent = originalText;
+              copyBtn.disabled = false;
+            }, 2000);
+          })
+          .catch((err) => {
+            copyFeedback.textContent = `Failed to copy: ${err}`;
+            copyFeedback.style.color = "red";
+          });
+      });
+    </script>
+  </body>
+</html>
