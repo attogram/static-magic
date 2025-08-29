@@ -4,9 +4,9 @@ This repository is configured to use [GitHub Codespaces](https://github.com/feat
 
 ## How It Works
 
-The configuration is defined in the `.devcontainer/devcontainer.json` file. This file instructs GitHub Codespaces to:
+The configuration is defined in the [`.devcontainer/devcontainer.json`](../.devcontainer/devcontainer.json) file. This file instructs GitHub Codespaces to:
 
-1.  **Use the Docker Environment:** It references our `docker-compose.yml` file to spin up the same development environment that you would use locally.
+1.  **Use the Docker Environment:** It references our [`docker-compose.yml`](../docker-compose.yml) file to spin up the same development environment that you would use locally.
 2.  **Install VS Code Extensions:** It automatically installs a few recommended Visual Studio Code extensions (Docker and GitLens) to enhance the development experience.
 
 ## Getting Started

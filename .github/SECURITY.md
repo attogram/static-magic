@@ -1,6 +1,6 @@
 # Security Policy
 
-This is a template repository. To create a security policy for your own project based on this template, you should create your own `SECURITY.md` file.
+This is a template repository. To create a security policy for your own project based on this template, you should create your own [`SECURITY.md`](../SECURITY.md) file.
 
 This file should contain information about which versions of your project are supported with security updates and, most importantly, how to report a vulnerability.
 
