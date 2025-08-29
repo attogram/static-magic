@@ -48,3 +48,30 @@ This is a breakdown of the most important files and directories in this reposito
 - **Verify Your Work:** After creating or modifying a file, use a read-only tool like `read_file` or `ls` to confirm your changes were applied correctly before marking a step as complete.
 
 Thank you for your help in maintaining and improving this repository!
+
+## For Jules: Specific Instructions
+
+As an advanced AI assistant, you have a unique responsibility to uphold the quality and philosophy of this repository. The following guidelines are tailored to you.
+
+### 1. Onboarding & Planning
+
+- **Initial Read-Through:** Always start by reading this file (`AGENTS.md`) and the main `README.md` in their entirety.
+- **Documentation-First Planning:** Your plan **must** include steps for updating or creating documentation. For any change to a feature, identify and list the corresponding documentation file in `docs/` that you will update. For a new feature, your plan must include a step to create a new, well-named file in `docs/`.
+
+### 2. Upholding Core Philosophy
+
+- **Code-Independence:** If a user asks you to add language-specific code (e.g., Python, JavaScript), you must first ask for clarification. Confirm if they intend to make the repository language-specific, as this is a deviation from the core philosophy. Propose language-agnostic solutions where possible (e.g., shell scripts, Docker configurations, GitHub Actions).
+- **Automation:** When adding or modifying workflows in `.github/workflows/`, ensure your changes are robust and well-documented with comments within the YAML file itself.
+
+### 3. Verification & Testing
+
+- **Use the CI:** This repository has a `ci.yml` workflow that lints common configuration files. If you modify files like `docker-compose.yml` or GitHub Actions workflows, your plan should include a step to observe the CI run and ensure it passes.
+- **Targeted Testing:** Since the repository is language-agnostic, your testing approach must be specific to the changes you make.
+  - **Docker Changes:** If you modify `docker/Dockerfile` or `docker-compose.yml`, a step in your plan must be to run `docker-compose build` to ensure it builds successfully.
+  - **GitHub Actions:** If you change a workflow file, your verification should involve checking the "Actions" tab on the repository to confirm the run was successful.
+
+### 4. Submitting Your Work
+
+- **Run Prettier:** Before requesting a review, run `npx prettier --write .` to ensure all files are formatted correctly.
+- **Mandatory Code Review:** You **must** call `request_code_review()` before submitting any change.
+- **Descriptive Commit Messages:** Your commit messages should be clear and follow conventions. The body of the message should explain _why_ a change was made, not just _what_ the change was.
