@@ -19,21 +19,21 @@ You can change your website's theme with a single line of code.
 
 GitHub Pages officially supports a number of themes. You can preview them by visiting their repositories.
 
-| Theme Name   | How to Use It ([`_config.yml`](../_config.yml))      | Preview Link                                                   |
-| :----------- | :--------------------------------- | :------------------------------------------------------------- |
-| Architect    | `theme: jekyll-theme-architect`    | [View on GitHub](https://github.com/pages-themes/architect)    |
-| Cayman       | `theme: jekyll-theme-cayman`       | [View on GitHub](https://github.com/pages-themes/cayman)       |
-| Dinky        | `theme: jekyll-theme-dinky`        | [View on GitHub](https://github.com/pages-themes/dinky)        |
-| Hacker       | `theme: jekyll-theme-hacker`       | [View on GitHub](https://github.com/pages-themes/hacker)       |
-| Leap Day     | `theme: jekyll-theme-leap-day`     | [View on GitHub](https://github.com/pages-themes/leap-day)     |
-| Merlot       | `theme: jekyll-theme-merlot`       | [View on GitHub](https://github.com/pages-themes/merlot)       |
-| Midnight     | `theme: jekyll-theme-midnight`     | [View on GitHub](https://github.com/pages-themes/midnight)     |
-| Minimal      | `theme: jekyll-theme-minimal`      | [View on GitHub](https://github.com/pages-themes/minimal)      |
-| Modernist    | `theme: jekyll-theme-modernist`    | [View on GitHub](https://github.com/pages-themes/modernist)    |
-| Primer       | `theme: jekyll-theme-primer`       | [View on GitHub](https://github.com/pages-themes/primer)       |
-| Slate        | `theme: jekyll-theme-slate`        | [View on GitHub](https://github.com/pages-themes/slate)        |
-| Tactile      | `theme: jekyll-theme-tactile`      | [View on GitHub](https://github.com/pages-themes/tactile)      |
-| Time Machine | `theme: jekyll-theme-time-machine` | [View on GitHub](https://github.com/pages-themes/time-machine) |
+| Theme Name   | How to Use It ([`_config.yml`](../_config.yml)) | Preview Link                                                   |
+| :----------- | :---------------------------------------------- | :------------------------------------------------------------- |
+| Architect    | `theme: jekyll-theme-architect`                 | [View on GitHub](https://github.com/pages-themes/architect)    |
+| Cayman       | `theme: jekyll-theme-cayman`                    | [View on GitHub](https://github.com/pages-themes/cayman)       |
+| Dinky        | `theme: jekyll-theme-dinky`                     | [View on GitHub](https://github.com/pages-themes/dinky)        |
+| Hacker       | `theme: jekyll-theme-hacker`                    | [View on GitHub](https://github.com/pages-themes/hacker)       |
+| Leap Day     | `theme: jekyll-theme-leap-day`                  | [View on GitHub](https://github.com/pages-themes/leap-day)     |
+| Merlot       | `theme: jekyll-theme-merlot`                    | [View on GitHub](https://github.com/pages-themes/merlot)       |
+| Midnight     | `theme: jekyll-theme-midnight`                  | [View on GitHub](https://github.com/pages-themes/midnight)     |
+| Minimal      | `theme: jekyll-theme-minimal`                   | [View on GitHub](https://github.com/pages-themes/minimal)      |
+| Modernist    | `theme: jekyll-theme-modernist`                 | [View on GitHub](https://github.com/pages-themes/modernist)    |
+| Primer       | `theme: jekyll-theme-primer`                    | [View on GitHub](https://github.com/pages-themes/primer)       |
+| Slate        | `theme: jekyll-theme-slate`                     | [View on GitHub](https://github.com/pages-themes/slate)        |
+| Tactile      | `theme: jekyll-theme-tactile`                   | [View on GitHub](https://github.com/pages-themes/tactile)      |
+| Time Machine | `theme: jekyll-theme-time-machine`              | [View on GitHub](https://github.com/pages-themes/time-machine) |
 
 ### Advanced: Using Other Themes
 
@@ -196,7 +196,6 @@ title: About Our Company
 description: Learn about our history, our team, and our mission.
 image: /assets/our-team-photo.jpg
 ---
-
 # About Us
 
 This is the rest of your page content...
@@ -264,6 +263,7 @@ This is possible, but it is an advanced topic that requires installing some soft
 While the setup can be technical, the benefit is that you can run a local web server that behaves exactly like GitHub Pages. You can see your changes instantly at `http://localhost:4000` without having to commit and push every time.
 
 To learn how to do this, follow the official guide from GitHub:
+
 - **[Testing your GitHub Pages site locally with Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll)**
 
 ### Creating a Navigation Menu
