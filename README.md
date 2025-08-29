@@ -1,4 +1,6 @@
-Welcome to [base](./docs/base.md)
+Welcome to [base](./docs/base.md).
+
+Your starting point for new GitHub projects.
 
 - [Documentation](./docs/README.md)
 
