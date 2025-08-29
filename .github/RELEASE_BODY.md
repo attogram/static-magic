@@ -1,3 +1,1 @@
-base ${TAG}
-
-base - your starting point for new GitHub projects
+base ${TAG} - your starting point for new GitHub projects
