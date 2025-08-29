@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wordle Clone - Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .game-container {
+        text-align: center;
+      }
+      #wordle-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+        width: 300px;
+        margin: 20px auto;
+      }
+      .tile {
+        width: 50px;
+        height: 50px;
+        border: 2px solid var(--border-color);
+        font-size: 2rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-transform: uppercase;
+      }
+      .tile.correct {
+        background-color: #28a745;
+        color: white;
+        border-color: #28a745;
+      }
+      .tile.present {
+        background-color: #ffc107;
+        color: white;
+        border-color: #ffc107;
+      }
+      .tile.absent {
+        background-color: #6c757d;
+        color: white;
+        border-color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Wordle Clone</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Games</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="game-container">
+          <p>Guess the 5-letter word in 6 tries.</p>
+          <div id="wordle-grid"></div>
+          <p id="game-status"></p>
+          <button id="restart-btn" class="btn" style="display: none">
+            Play Again
+          </button>
+        </div>
+        <section id="explanation" style="margin-top: 40px">
+          <h3>How it Works</h3>
+          <p>
+            A 5-letter word is chosen at random. The player types their guess.
+            When a 5-letter guess is submitted (by pressing Enter), the letters
+            are colored based on their status: Green for correct letter in the
+            correct position, Yellow for correct letter in the wrong position,
+            and Gray for a letter not in the word at all. The game is managed by
+            listening for `keydown` events.
+          </p>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+    <script>
+      const grid = document.getElementById("wordle-grid");
+      const statusDisplay = document.getElementById("game-status");
+      const restartBtn = document.getElementById("restart-btn");
+      const wordList = [
+        "APPLE",
+        "LEMON",
+        "GRAPE",
+        "MANGO",
+        "PEACH",
+        "QUERY",
+        "JAZZY",
+        "WORLD",
+      ];
+      let secretWord = "";
+      let currentRow = 0;
+      let currentGuess = "";
+      let isGameOver = false;
+
+      function initializeGame() {
+        secretWord = wordList[Math.floor(Math.random() * wordList.length)];
+        currentRow = 0;
+        currentGuess = "";
+        isGameOver = false;
+        grid.innerHTML = "";
+        statusDisplay.textContent = "";
+        restartBtn.style.display = "none";
+        for (let i = 0; i < 30; i++) {
+          const tile = document.createElement("div");
+          tile.classList.add("tile");
+          grid.appendChild(tile);
+        }
+        document.addEventListener("keydown", handleKeyPress);
+      }
+
+      function handleKeyPress(e) {
+        if (isGameOver) return;
+
+        if (e.key === "Enter" && currentGuess.length === 5) {
+          submitGuess();
+        } else if (e.key === "Backspace") {
+          currentGuess = currentGuess.slice(0, -1);
+        } else if (currentGuess.length < 5 && e.key.match(/^[a-z]$/i)) {
+          currentGuess += e.key.toUpperCase();
+        }
+        updateGrid();
+      }
+
+      function updateGrid() {
+        const tiles = grid.children;
+        for (let i = 0; i < 5; i++) {
+          const tile = tiles[currentRow * 5 + i];
+          tile.textContent = currentGuess[i] || "";
+        }
+      }
+
+      function submitGuess() {
+        if (!wordList.includes(currentGuess)) {
+          // A simple check if the word is valid, can be expanded
+          statusDisplay.textContent = "Not in word list!";
+          return;
+        }
+        statusDisplay.textContent = "";
+        const guess = currentGuess;
+        const tiles = Array.from(grid.children).slice(
+          currentRow * 5,
+          currentRow * 5 + 5
+        );
+
+        for (let i = 0; i < 5; i++) {
+          if (guess[i] === secretWord[i]) {
+            tiles[i].classList.add("correct");
+          } else if (secretWord.includes(guess[i])) {
+            tiles[i].classList.add("present");
+          } else {
+            tiles[i].classList.add("absent");
+          }
+        }
+
+        if (guess === secretWord) {
+          statusDisplay.textContent = "You win!";
+          isGameOver = true;
+          restartBtn.style.display = "inline-block";
+          document.removeEventListener("keydown", handleKeyPress);
+        } else {
+          currentRow++;
+          currentGuess = "";
+          if (currentRow === 6) {
+            statusDisplay.textContent = `Game Over! The word was ${secretWord}.`;
+            isGameOver = true;
+            restartBtn.style.display = "inline-block";
+            document.removeEventListener("keydown", handleKeyPress);
+          }
+        }
+      }
+
+      restartBtn.addEventListener("click", initializeGame);
+      document.addEventListener("keydown", handleKeyPress);
+      initializeGame();
+    </script>
+  </body>
+</html>

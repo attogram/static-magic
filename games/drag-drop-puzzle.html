@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag and Drop Puzzle - Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .puzzle-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        justify-content: center;
+      }
+      #puzzle-board,
+      #piece-pool {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        gap: 5px;
+        width: 315px;
+        height: 315px;
+        border: 2px solid var(--border-color);
+        padding: 5px;
+      }
+      .puzzle-slot,
+      .puzzle-piece {
+        width: 100px;
+        height: 100px;
+        background-color: var(--nav-bg);
+      }
+      .puzzle-piece {
+        background-image: url("https://picsum.photos/300/300?grayscale");
+        cursor: move;
+      }
+      .puzzle-slot.drag-over {
+        background-color: rgba(0, 123, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Drag and Drop Puzzle</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Games</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="puzzle-container">
+          <div>
+            <h3>Puzzle Pieces</h3>
+            <div id="piece-pool"></div>
+          </div>
+          <div>
+            <h3>Puzzle Board</h3>
+            <div id="puzzle-board"></div>
+          </div>
+        </div>
+        <section id="explanation" style="margin-top: 40px">
+          <h3>How it Works</h3>
+          <p>
+            An image is divided into a 3x3 grid. The pieces are created as divs
+            with the `background-image` property set to the source image and the
+            `background-position` adjusted to show the correct part of the
+            image. The pieces are then shuffled and placed in a "pool". The user
+            must drag each piece from the pool and drop it into the correct slot
+            on the puzzle board. The HTML5 Drag and Drop API is used to manage
+            moving the pieces.
+          </p>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+    <script>
+      const piecePool = document.getElementById("piece-pool");
+      const puzzleBoard = document.getElementById("puzzle-board");
+      const pieceCount = 9;
+
+      function createPuzzle() {
+        piecePool.innerHTML = "";
+        puzzleBoard.innerHTML = "";
+
+        // Create puzzle slots
+        for (let i = 0; i < pieceCount; i++) {
+          const slot = document.createElement("div");
+          slot.classList.add("puzzle-slot");
+          slot.dataset.slotId = i;
+          puzzleBoard.appendChild(slot);
+          addDropEvents(slot);
+        }
+
+        // Create and shuffle pieces
+        const pieces = [];
+        for (let i = 0; i < pieceCount; i++) {
+          const piece = document.createElement("div");
+          piece.classList.add("puzzle-piece");
+          piece.dataset.pieceId = i;
+          piece.draggable = true;
+          const x = (i % 3) * -100;
+          const y = Math.floor(i / 3) * -100;
+          piece.style.backgroundPosition = `${x}px ${y}px`;
+          pieces.push(piece);
+          addDragEvents(piece);
+        }
+
+        pieces.sort(() => Math.random() - 0.5);
+        pieces.forEach((p) => piecePool.appendChild(p));
+      }
+
+      function addDragEvents(piece) {
+        piece.addEventListener("dragstart", (e) => {
+          e.dataTransfer.setData("text/plain", piece.dataset.pieceId);
+          setTimeout(() => (piece.style.visibility = "hidden"), 0);
+        });
+        piece.addEventListener("dragend", () => {
+          setTimeout(() => (piece.style.visibility = "visible"), 0);
+        });
+      }
+
+      function addDropEvents(slot) {
+        slot.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          slot.classList.add("drag-over");
+        });
+        slot.addEventListener("dragleave", () => {
+          slot.classList.remove("drag-over");
+        });
+        slot.addEventListener("drop", (e) => {
+          e.preventDefault();
+          slot.classList.remove("drag-over");
+          const pieceId = e.dataTransfer.getData("text/plain");
+          const piece = document.querySelector(`[data-piece-id='${pieceId}']`);
+
+          if (slot.dataset.slotId === pieceId && !slot.hasChildNodes()) {
+            slot.appendChild(piece);
+            piece.draggable = false;
+            piece.style.cursor = "default";
+            checkWin();
+          }
+        });
+      }
+
+      function checkWin() {
+        if (
+          puzzleBoard.querySelectorAll(".puzzle-piece").length === pieceCount
+        ) {
+          setTimeout(() => {
+            alert("You win!");
+            createPuzzle();
+          }, 100);
+        }
+      }
+
+      createPuzzle();
+    </script>
+  </body>
+</html>

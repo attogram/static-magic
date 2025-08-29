@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag and Drop UI - Getting Interactive with GitHub Pages</title>
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      .drop-lanes {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .lane {
+        width: 30%;
+        min-height: 200px;
+        padding: 10px;
+        border: 2px dashed var(--border-color);
+        border-radius: 5px;
+      }
+      .draggable {
+        background-color: var(--nav-bg);
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        cursor: move;
+        user-select: none;
+      }
+      .draggable.dragging {
+        opacity: 0.5;
+      }
+      .lane.drag-over {
+        background-color: rgba(0, 123, 255, 0.1);
+        border-style: solid;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="dnd-intro">
+          <h2>Drag and Drop UI</h2>
+          <p>
+            The HTML5 Drag and Drop API provides a native way to create user
+            interfaces where elements can be moved and reordered. It's a
+            powerful tool for building interactive applications like Kanban
+            boards or reorderable lists.
+          </p>
+          <p>
+            The API is event-driven. Key events include
+            <code>dragstart</code> (when you start dragging),
+            <code>dragover</code> (when you're dragging over a valid drop
+            target), and <code>drop</code> (when you release the mouse).
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <p>Drag the items between the lanes.</p>
+          <div class="drop-lanes">
+            <div class="lane" id="lane-1">
+              <div class="draggable" draggable="true" id="item-1">Item 1</div>
+              <div class="draggable" draggable="true" id="item-2">Item 2</div>
+            </div>
+            <div class="lane" id="lane-2">
+              <div class="draggable" draggable="true" id="item-3">Item 3</div>
+            </div>
+            <div class="lane" id="lane-3"></div>
+          </div>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            The logic involves adding event listeners for the various
+            drag-and-drop events to both the draggable items and the drop
+            targets (lanes).
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;div class="drop-lanes"&gt;
+    &lt;div class="lane" id="lane-1"&gt;
+        &lt;div class="draggable" draggable="true" id="item-1"&gt;Item 1&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="lane" id="lane-2"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+          <h4>CSS (for visual feedback)</h4>
+          <pre><code>.draggable.dragging {
+    opacity: 0.5;
+}
+.lane.drag-over {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-style: solid;
+}</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>const draggables = document.querySelectorAll('.draggable');
+const lanes = document.querySelectorAll('.lane');
+
+draggables.forEach(draggable => {
+    draggable.addEventListener('dragstart', (e) => {
+        draggable.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', draggable.id);
+    });
+
+    draggable.addEventListener('dragend', () => {
+        draggable.classList.remove('dragging');
+    });
+});
+
+lanes.forEach(lane => {
+    lane.addEventListener('dragover', e => {
+        e.preventDefault(); // Necessary to allow dropping
+        lane.classList.add('drag-over');
+    });
+
+    lane.addEventListener('dragleave', () => {
+        lane.classList.remove('drag-over');
+    });
+
+    lane.addEventListener('drop', e => {
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(id);
+        if (draggable) {
+            lane.appendChild(draggable);
+        }
+        lane.classList.remove('drag-over');
+    });
+});
+</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <script>
+      const draggables = document.querySelectorAll(".draggable");
+      const lanes = document.querySelectorAll(".lane");
+
+      draggables.forEach((draggable) => {
+        draggable.addEventListener("dragstart", (e) => {
+          draggable.classList.add("dragging");
+          e.dataTransfer.setData("text/plain", draggable.id);
+          e.dataTransfer.effectAllowed = "move";
+        });
+
+        draggable.addEventListener("dragend", () => {
+          draggable.classList.remove("dragging");
+        });
+      });
+
+      lanes.forEach((lane) => {
+        lane.addEventListener("dragover", (e) => {
+          e.preventDefault(); // Necessary to allow dropping
+          lane.classList.add("drag-over");
+        });
+
+        lane.addEventListener("dragleave", () => {
+          lane.classList.remove("drag-over");
+        });
+
+        lane.addEventListener("drop", (e) => {
+          e.preventDefault();
+          const id = e.dataTransfer.getData("text/plain");
+          const draggable = document.getElementById(id);
+          if (draggable) {
+            lane.appendChild(draggable);
+          }
+          lane.classList.remove("drag-over");
+        });
+      });
+    </script>
+  </body>
+</html>

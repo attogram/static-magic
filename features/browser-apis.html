@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browser API Demos - Getting Interactive with GitHub Pages</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="api-intro">
+          <h2>Browser API Demos</h2>
+          <p>
+            Modern browsers come packed with powerful JavaScript APIs that can
+            give your static site capabilities that once required a native
+            application. These often require user permission for security and
+            privacy reasons.
+          </p>
+          <p>Here are a few examples of what you can do.</p>
+        </section>
+
+        <hr />
+
+        <!-- Geolocation API Demo -->
+        <section id="geolocation-demo">
+          <h3>1. Geolocation API</h3>
+          <p>
+            Get the user's geographical location. This requires user permission.
+          </p>
+          <button id="geo-btn" class="btn">Get My Location</button>
+          <p id="geo-output"></p>
+          <h4>Code</h4>
+          <pre><code>const geoBtn = document.getElementById('geo-btn');
+const geoOutput = document.getElementById('geo-output');
+
+geoBtn.addEventListener('click', () => {
+    if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            geoOutput.textContent = `Latitude: ${lat}, Longitude: ${lon}`;
+        }, (error) => {
+            geoOutput.textContent = `Error: ${error.message}`;
+        });
+    } else {
+        geoOutput.textContent = 'Geolocation is not available.';
+    }
+});</code></pre>
+        </section>
+
+        <hr />
+
+        <!-- Notifications API Demo -->
+        <section id="notifications-demo">
+          <h3>2. Notifications API</h3>
+          <p>
+            Display desktop notifications to the user. This also requires
+            permission.
+          </p>
+          <button id="notify-btn" class="btn">Show Notification</button>
+          <p id="notify-output"></p>
+          <h4>Code</h4>
+          <pre><code>const notifyBtn = document.getElementById('notify-btn');
+
+notifyBtn.addEventListener('click', () => {
+    if (!("Notification" in window)) {
+        alert("This browser does not support desktop notification");
+    } else if (Notification.permission === "granted") {
+        new Notification("Hi there!", { body: "This is a notification." });
+    } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                new Notification("Hi there!", { body: "This is a notification." });
+            }
+        });
+    }
+});</code></pre>
+        </section>
+
+        <hr />
+
+        <!-- Speech Synthesis API Demo -->
+        <section id="speech-demo">
+          <h3>3. Web Speech API (Synthesis)</h3>
+          <p>Convert text to speech right in the browser.</p>
+          <input type="text" id="speech-text" value="Hello, world!" />
+          <button id="speak-btn" class="btn">Speak</button>
+          <p id="speech-output"></p>
+          <h4>Code</h4>
+          <pre><code>const speakBtn = document.getElementById('speak-btn');
+const speechText = document.getElementById('speech-text');
+
+speakBtn.addEventListener('click', () => {
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(speechText.value);
+        window.speechSynthesis.speak(utterance);
+    } else {
+        alert('Speech synthesis is not available.');
+    }
+});</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <script>
+      // Geolocation
+      const geoBtn = document.getElementById("geo-btn");
+      const geoOutput = document.getElementById("geo-output");
+      geoBtn.addEventListener("click", () => {
+        geoOutput.textContent = "Getting location...";
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude.toFixed(4);
+              const lon = position.coords.longitude.toFixed(4);
+              geoOutput.textContent = `Latitude: ${lat}, Longitude: ${lon}`;
+            },
+            (error) => {
+              geoOutput.textContent = `Error: ${error.message}`;
+            }
+          );
+        } else {
+          geoOutput.textContent =
+            "Geolocation is not available in this browser.";
+        }
+      });
+
+      // Notifications
+      const notifyBtn = document.getElementById("notify-btn");
+      const notifyOutput = document.getElementById("notify-output");
+      notifyBtn.addEventListener("click", () => {
+        if (!("Notification" in window)) {
+          notifyOutput.textContent =
+            "This browser does not support desktop notification.";
+          return;
+        }
+        if (Notification.permission === "granted") {
+          new Notification("Hi there!", {
+            body: "This is a notification from the demo.",
+          });
+          notifyOutput.textContent = "Notification sent!";
+        } else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+              new Notification("Hi there!", {
+                body: "This is a notification from the demo.",
+              });
+              notifyOutput.textContent =
+                "Permission granted! Notification sent.";
+            } else {
+              notifyOutput.textContent = "Permission denied.";
+            }
+          });
+        } else {
+          notifyOutput.textContent = "Notification permission has been denied.";
+        }
+      });
+
+      // Speech Synthesis
+      const speakBtn = document.getElementById("speak-btn");
+      const speechText = document.getElementById("speech-text");
+      const speechOutput = document.getElementById("speech-output");
+      speakBtn.addEventListener("click", () => {
+        if ("speechSynthesis" in window) {
+          if (speechText.value.trim() !== "") {
+            const utterance = new SpeechSynthesisUtterance(speechText.value);
+            window.speechSynthesis.speak(utterance);
+            speechOutput.textContent = `Speaking...`;
+            utterance.onend = () => {
+              speechOutput.textContent = "Finished speaking.";
+            };
+          } else {
+            speechOutput.textContent = "Please enter some text to speak.";
+          }
+        } else {
+          speechOutput.textContent =
+            "Speech synthesis is not available in this browser.";
+        }
+      });
+    </script>
+  </body>
+</html>

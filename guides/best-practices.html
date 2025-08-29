@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Best Practices - Getting Interactive with GitHub Pages</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Best Practices for Static Interactivity</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../features/forms.html">Forms</a></li>
+          <li><a href="../features/live-js-runner.html">JS Runner</a></li>
+          <li><a href="../features/theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="../features/notes-app.html">Notes App</a></li>
+          <li><a href="../features/filter-search.html">Filter & Search</a></li>
+          <li>
+            <a href="../features/markdown-converter.html">Markdown Converter</a>
+          </li>
+          <li><a href="../features/json-viewer.html">JSON Viewer</a></li>
+          <li>
+            <a href="../features/mermaid-diagrams.html">Mermaid Diagrams</a>
+          </li>
+          <li><a href="../features/clipboard.html">Clipboard API</a></li>
+          <li><a href="../features/drag-drop.html">Drag & Drop</a></li>
+          <li><a href="../features/spa-routing.html">SPA Routing</a></li>
+          <li><a href="../features/page-state.html">Page State</a></li>
+          <li><a href="../features/browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="best-practices.html">Best Practices</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <section>
+          <h2>Progressive Enhancement</h2>
+          <p>
+            Start with a solid HTML foundation that works without CSS or
+            JavaScript. Your content should be readable and your links should
+            function. Then, layer on CSS for styling and JavaScript for
+            interactivity. This ensures your site is usable by everyone,
+            regardless of their browser capabilities or network speed.
+          </p>
+        </section>
+        <section>
+          <h2>Accessibility (a11y)</h2>
+          <p>
+            An interactive site is only useful if everyone can interact with it.
+            Keep accessibility in mind:
+          </p>
+          <ul>
+            <li>
+              <strong>Semantic HTML:</strong> Use tags like
+              <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>,
+              <code>&lt;button&gt;</code>, and
+              <code>&lt;input&gt;</code> correctly. They provide built-in
+              accessibility features.
+            </li>
+            <li>
+              <strong>Keyboard Navigation:</strong> Ensure all interactive
+              elements (buttons, links, form fields) can be accessed and
+              operated using only the keyboard.
+            </li>
+            <li>
+              <strong>ARIA Roles:</strong> Use ARIA (Accessible Rich Internet
+              Applications) attributes when necessary to provide more context
+              for screen readers, especially for custom widgets.
+            </li>
+            <li>
+              <strong>Color Contrast:</strong> Make sure your text has
+              sufficient contrast against its background.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Performance</h2>
+          <p>
+            Client-side interactivity means the user's device is doing all the
+            work. Keep it fast:
+          </p>
+          <ul>
+            <li>
+              <strong>Minimize JavaScript:</strong> Use vanilla JavaScript
+              whenever possible. Avoid large libraries or frameworks if you only
+              need a small part of their functionality.
+            </li>
+            <li>
+              <strong>Load Scripts Asynchronously:</strong> Use the
+              <code>async</code> or <code>defer</code> attributes on your
+              <code>&lt;script&gt;</code> tags to prevent them from blocking
+              page rendering.
+            </li>
+            <li>
+              <strong>Optimize Assets:</strong> Compress images and minify your
+              CSS and JavaScript files.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Security</h2>
+          <p>Even without a server, there are security considerations:</p>
+          <ul>
+            <li>
+              <strong>Cross-Site Scripting (XSS):</strong> Be careful when
+              displaying user-generated content. Sanitize any input before
+              rendering it as HTML to prevent malicious scripts from being
+              injected. For example, instead of
+              <code>element.innerHTML = userInput</code>, use
+              <code>element.textContent = userInput</code> if you don't need to
+              render HTML.
+            </li>
+            <li>
+              <strong>Third-Party Scripts:</strong> Be cautious when including
+              scripts from CDNs or other sources. Ensure they are from a trusted
+              provider.
+            </li>
+          </ul>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+  </body>
+</html>

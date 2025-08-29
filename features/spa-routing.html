@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Client-Side Routing (SPA-style) - Getting Interactive with GitHub Pages
+    </title>
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      .page-content {
+        display: none;
+        padding: 20px;
+        border: 1px solid var(--border-color);
+        border-top: none;
+      }
+      .page-content.active {
+        display: block;
+      }
+      .spa-nav a {
+        padding: 10px 15px;
+        cursor: pointer;
+        border: 1px solid transparent;
+      }
+      .spa-nav a.active {
+        border-color: var(--border-color);
+        border-bottom-color: var(--bg-color);
+        background-color: var(--bg-color);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="spa-intro">
+          <h2>Client-Side Routing (SPA-style)</h2>
+          <p>
+            You can simulate the navigation of a Single-Page Application (SPA)
+            without a complex framework. The secret is using the URL's "hash"
+            (the part after the <code>#</code>). By listening for changes to the
+            hash, you can show and hide content dynamically, creating a fast,
+            app-like experience.
+          </p>
+          <p>
+            This technique is perfect for simple SPAs, tabbed interfaces, or
+            deep-linking to specific sections of a page. The browser's history
+            is even updated, so the back and forward buttons work as expected.
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <nav class="spa-nav">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <div id="router-output">
+            <div id="home" class="page-content">
+              <h4>Home View</h4>
+              <p>
+                This is the home content. Notice the URL has changed to include
+                #home.
+              </p>
+            </div>
+            <div id="about" class="page-content">
+              <h4>About View</h4>
+              <p>This is the about page content. The URL now ends in #about.</p>
+            </div>
+            <div id="contact" class="page-content">
+              <h4>Contact View</h4>
+              <p>This is the contact section. The URL hash is #contact.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            The JavaScript listens for the <code>hashchange</code> event on the
+            window and a <code>DOMContentLoaded</code> event to handle the
+            initial page load.
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;nav class="spa-nav"&gt;
+    &lt;a href="#home"&gt;Home&lt;/a&gt;
+    &lt;a href="#about"&gt;About&lt;/a&gt;
+    &lt;a href="#contact"&gt;Contact&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;div id="router-output"&gt;
+    &lt;div id="home" class="page-content"&gt;...&lt;/div&gt;
+    &lt;div id="about" class="page-content"&gt;...&lt;/div&gt;
+    &lt;div id="contact" class="page-content"&gt;...&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>document.addEventListener('DOMContentLoaded', () => {
+    const contentPages = document.querySelectorAll('.page-content');
+    const spaNavLinks = document.querySelectorAll('.spa-nav a');
+    const defaultRoute = 'home';
+
+    function handleRouteChange() {
+        const route = window.location.hash.substring(1) || defaultRoute;
+
+        contentPages.forEach(page => {
+            page.classList.toggle('active', page.id === route);
+        });
+
+        spaNavLinks.forEach(link => {
+            link.classList.toggle('active', link.hash === `#${route}`);
+        });
+    }
+
+    window.addEventListener('hashchange', handleRouteChange);
+
+    // Set initial hash if none is present and handle initial load
+    if (!window.location.hash) {
+        window.location.hash = defaultRoute;
+    } else {
+        handleRouteChange();
+    }
+});
+</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const contentPages = document.querySelectorAll(".page-content");
+        const spaNavLinks = document.querySelectorAll(".spa-nav a");
+        const defaultRoute = "home";
+
+        function handleRouteChange() {
+          const route = window.location.hash.substring(1) || defaultRoute;
+
+          // If the route doesn't exist, go to default
+          if (!document.getElementById(route)) {
+            window.location.hash = defaultRoute;
+            return; // The hashchange event will fire again
+          }
+
+          contentPages.forEach((page) => {
+            page.classList.toggle("active", page.id === route);
+          });
+
+          spaNavLinks.forEach((link) => {
+            // Use getAttribute to get the literal href value
+            link.classList.toggle(
+              "active",
+              link.getAttribute("href") === `#${route}`
+            );
+          });
+        }
+
+        window.addEventListener("hashchange", handleRouteChange);
+
+        // Set initial hash if none is present, otherwise trigger the handler
+        if (!window.location.hash) {
+          window.location.hash = defaultRoute; // This will trigger the hashchange event
+        } else {
+          handleRouteChange(); // Trigger for the initial load
+        }
+      });
+    </script>
+  </body>
+</html>
