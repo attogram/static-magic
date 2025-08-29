@@ -32,11 +32,7 @@ pnpm add --save-dev --save-exact prettier
 bun add --dev --exact prettier
 ```
 
-After installing Prettier, you should create a configuration file to let editors and other tools know that you are using Prettier.
-
-```bash
-echo {} > .prettierrc
-```
+This repository includes a default configuration file, [`.prettierrc`](../.prettierrc), so you don't need to create one from scratch. It lets editors and other tools know that you are using Prettier.
 
 It is also useful to create a `.prettierignore` file to specify which files should not be formatted by Prettier.
 
