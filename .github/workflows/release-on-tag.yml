@@ -44,9 +44,9 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          title: $(sed "s/\${TAG}/${{ github.ref_name }}/g" .github/RELEASE_TITLE.txt)
+          name: $(sed "s/\${TAG}/${{ github.ref_name }}/g" .github/RELEASE_TITLE.txt)
           body: ${{ steps.generate_notes.outputs.FINAL_BODY }}
           tag_name: ${{ github.ref_name }}
           draft: false
