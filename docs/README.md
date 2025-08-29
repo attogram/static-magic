@@ -9,5 +9,6 @@ This directory contains the documentation for the `base` project.
 - **[GitHub Workflows](./github-workflows.md)**: An explanation of the CI/CD workflows for linting, testing, and releasing.
 - **[Licensing Information](./licensing.md)**: Details on the MIT License and how to properly attribute copyright.
 - **[Deploying to Render.com](./render.md)**: Instructions for deploying the project to the Render.com platform.
+- **[Merging `base` Into an Existing Repository](./merging-base.md)**: A guide on how to incorporate `base` into an existing project.
 - **[Standard Repository Files](./standard-files.md)**: An explanation of the standard configuration files like `.gitignore`, `.editorconfig`, and `.gitattributes`.
 - **[Maintaining `base` as a Template Repository](./template-repo.md)**: A guide for maintainers of this template, outlining best practices and administrative steps.
