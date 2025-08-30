@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Live JavaScript Runner - Getting Interactive with GitHub Pages
+    </title>
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      #js-code {
+        width: 100%;
+        box-sizing: border-box;
+        height: 200px;
+        font-family: monospace;
+      }
+      #js-output {
+        background-color: var(--code-bg);
+        color: var(--text-color);
+        padding: 10px;
+        border-radius: 5px;
+        min-height: 50px;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="runner-intro">
+          <h2>Live JavaScript Runner</h2>
+          <p>
+            You can build a simple JavaScript playground right in the browser.
+            This allows users to write and execute code on the fly, seeing the
+            results instantly. It's a powerful tool for learning and
+            experimentation.
+          </p>
+          <p>
+            <strong>Security Note:</strong> Executing arbitrary code from users
+            can be risky. While we're using <code>new Function()</code> which is
+            safer than <code>eval()</code>, this approach should still be used
+            with caution, especially in a production environment with sensitive
+            user data. For a simple educational tool on a static site, the risk
+            is minimal.
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <textarea
+            id="js-code"
+            placeholder="console.log('Hello, world!');"
+          ></textarea>
+          <button id="run-btn" class="btn">Run</button>
+          <h4>Output:</h4>
+          <pre id="js-output"></pre>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            The magic is in capturing the <code>console.log</code> messages and
+            executing the user's code in a controlled way.
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;textarea id="js-code" placeholder="console.log('Hello, world!');"&gt;&lt;/textarea&gt;
+&lt;button id="run-btn" class="btn"&gt;Run&lt;/button&gt;
+&lt;h4&gt;Output:&lt;/h4&gt;
+&lt;pre id="js-output"&gt;&lt;/pre&gt;</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>const codeArea = document.getElementById('js-code');
+const runButton = document.getElementById('run-btn');
+const outputArea = document.getElementById('js-output');
+
+runButton.addEventListener('click', () => {
+    const userCode = codeArea.value;
+    let output = '';
+
+    // Temporarily override console.log to capture output
+    const oldLog = console.log;
+    console.log = (...args) => {
+        output += args.map(arg => JSON.stringify(arg, null, 2)).join(' ') + '\\n';
+    };
+
+    try {
+        // Use new Function() to execute the code
+        new Function(userCode)();
+        outputArea.style.color = 'var(--text-color)';
+    } catch (error) {
+        output = `Error: ${error.message}`;
+        outputArea.style.color = 'red';
+    } finally {
+        // Restore the original console.log
+        console.log = oldLog;
+        outputArea.textContent = output || '(No output)';
+    }
+});</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <script>
+      const codeArea = document.getElementById("js-code");
+      const runButton = document.getElementById("run-btn");
+      const outputArea = document.getElementById("js-output");
+
+      runButton.addEventListener("click", () => {
+        const userCode = codeArea.value;
+        let output = "";
+
+        // Temporarily override console.log to capture output
+        const oldLog = console.log;
+        console.log = (...args) => {
+          // We use JSON.stringify to handle objects and arrays nicely
+          output +=
+            args
+              .map((arg) => {
+                if (typeof arg === "string") return arg;
+                if (arg === undefined) return "undefined";
+                return JSON.stringify(arg, null, 2);
+              })
+              .join(" ") + "\n";
+        };
+
+        try {
+          // Execute the user's code
+          new Function(userCode)();
+          outputArea.style.color = "var(--text-color)";
+        } catch (error) {
+          output = `Error: ${error.message}`;
+          outputArea.style.color = "red";
+        } finally {
+          // Restore the original console.log
+          console.log = oldLog;
+          outputArea.textContent = output || "(No output)";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe - Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .game-container {
+        max-width: 400px;
+        margin: auto;
+        text-align: center;
+      }
+      #tic-tac-toe-board {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 20px auto;
+        max-width: 320px;
+      }
+      .cell {
+        width: 100px;
+        height: 100px;
+        background-color: var(--nav-bg);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+      }
+      #game-status {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Tic Tac Toe</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Games</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="game-container">
+          <div id="game-status">Player X's turn</div>
+          <div id="tic-tac-toe-board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+          </div>
+          <button id="restart-btn" class="btn">New Game</button>
+        </div>
+        <section id="explanation" style="margin-top: 40px">
+          <h3>How it Works</h3>
+          <p>
+            This is a classic Tic Tac Toe game. The game state is managed in a
+            JavaScript array. After each move, the game checks for a win by
+            comparing the board state against a set of winning combinations. The
+            game ends when a player wins or all cells are filled, resulting in a
+            draw.
+          </p>
+          <h4>The Code</h4>
+          <pre><code>&lt;!-- HTML --&gt;
+&lt;div id="game-status"&gt;Player X's turn&lt;/div&gt;
+&lt;div id="tic-tac-toe-board"&gt;
+    &lt;div class="cell" data-index="0"&gt;&lt;/div&gt;
+    ... (9 cells) ...
+&lt;/div&gt;
+&lt;button id="restart-btn" class="btn"&gt;New Game&lt;/button&gt;
+
+&lt;!-- JavaScript --&gt;
+const statusDisplay = document.getElementById('game-status');
+const restartBtn = document.getElementById('restart-btn');
+const cells = document.querySelectorAll('.cell');
+
+let currentPlayer = 'X';
+let gameState = ["", "", "", "", "", "", "", "", ""];
+let gameActive = true;
+
+const winningConditions = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+    [0, 4, 8], [2, 4, 6]             // Diagonals
+];
+
+function handleCellClick(e) {
+    const clickedCell = e.target;
+    const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+    if (gameState[clickedCellIndex] !== "" || !gameActive) return;
+
+    gameState[clickedCellIndex] = currentPlayer;
+    clickedCell.textContent = currentPlayer;
+    handleResultValidation();
+}
+
+function handleResultValidation() {
+    let roundWon = false;
+    for (let i = 0; i < winningConditions.length; i++) {
+        const winCondition = winningConditions[i];
+        let a = gameState[winCondition[0]];
+        let b = gameState[winCondition[1]];
+        let c = gameState[winCondition[2]];
+        if (a === '' || b === '' || c === '') continue;
+        if (a === b && b === c) {
+            roundWon = true;
+            break;
+        }
+    }
+
+    if (roundWon) {
+        statusDisplay.textContent = `Player ${currentPlayer} has won!`;
+        gameActive = false;
+        return;
+    }
+
+    if (!gameState.includes("")) {
+        statusDisplay.textContent = "Game ended in a draw!";
+        gameActive = false;
+        return;
+    }
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+}
+
+function handleRestartGame() {
+    gameActive = true;
+    currentPlayer = "X";
+    gameState = ["", "", "", "", "", "", "", "", ""];
+    statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+    cells.forEach(cell => cell.textContent = "");
+}
+
+cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+restartBtn.addEventListener('click', handleRestartGame);
+</code></pre>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+    <script>
+      const statusDisplay = document.getElementById("game-status");
+      const restartBtn = document.getElementById("restart-btn");
+      const cells = document.querySelectorAll(".cell");
+
+      let currentPlayer = "X";
+      let gameState = ["", "", "", "", "", "", "", "", ""];
+      let gameActive = true;
+
+      const winningConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
+
+      function handleCellClick(e) {
+        const clickedCell = e.target;
+        const clickedCellIndex = parseInt(
+          clickedCell.getAttribute("data-index")
+        );
+
+        if (gameState[clickedCellIndex] !== "" || !gameActive) {
+          return;
+        }
+
+        gameState[clickedCellIndex] = currentPlayer;
+        clickedCell.textContent = currentPlayer;
+        clickedCell.style.color =
+          currentPlayer === "X" ? "var(--nav-link)" : "#dc3545";
+
+        handleResultValidation();
+      }
+
+      function handleResultValidation() {
+        let roundWon = false;
+        for (let i = 0; i < winningConditions.length; i++) {
+          const winCondition = winningConditions[i];
+          let a = gameState[winCondition[0]];
+          let b = gameState[winCondition[1]];
+          let c = gameState[winCondition[2]];
+          if (a === "" || b === "" || c === "") {
+            continue;
+          }
+          if (a === b && b === c) {
+            roundWon = true;
+            break;
+          }
+        }
+
+        if (roundWon) {
+          statusDisplay.textContent = `Player ${currentPlayer} has won!`;
+          gameActive = false;
+          return;
+        }
+
+        if (!gameState.includes("")) {
+          statusDisplay.textContent = "Game ended in a draw!";
+          gameActive = false;
+          return;
+        }
+
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+        statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+      }
+
+      function handleRestartGame() {
+        gameActive = true;
+        currentPlayer = "X";
+        gameState = ["", "", "", "", "", "", "", "", ""];
+        statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+        cells.forEach((cell) => {
+          cell.textContent = "";
+          cell.style.color = "var(--text-color)";
+        });
+      }
+
+      cells.forEach((cell) => cell.addEventListener("click", handleCellClick));
+      restartBtn.addEventListener("click", handleRestartGame);
+    </script>
+  </body>
+</html>

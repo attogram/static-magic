@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forms Without Servers - Getting Interactive with GitHub Pages</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="forms-intro">
+          <h2>Forms Without Servers</h2>
+          <p>
+            One of the most common myths about static sites is that you can't
+            handle form submissions. While you can't have a traditional
+            server-side script to process the data, you can absolutely capture
+            user input and create interactive experiences entirely on the
+            client-side with JavaScript.
+          </p>
+        </section>
+
+        <section id="use-cases">
+          <h3>Use Cases</h3>
+          <ul>
+            <li>
+              <strong>Calculators:</strong> Price estimators, unit converters,
+              or fitness calculators that provide instant results.
+            </li>
+            <li>
+              <strong>Quizzes:</strong> Simple quizzes where the score is
+              calculated and displayed in the browser.
+            </li>
+            <li>
+              <strong>Interactive Checklists:</strong> Tools that let users
+              check off items and see a summary.
+            </li>
+            <li>
+              <strong>Contact Forms (with a twist):</strong> Forms that gather
+              user input and then open the user's default email client with a
+              pre-filled <code>mailto:</code> link.
+            </li>
+          </ul>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <form id="greeting-form">
+            <label for="name-input">Enter your name:</label>
+            <input type="text" id="name-input" required />
+            <button type="submit" class="btn">Say Hello</button>
+          </form>
+          <div
+            id="greeting-output"
+            style="margin-top: 20px; font-weight: bold"
+          ></div>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            Here's the full code to make the demo above work. You can copy and
+            paste this into your own HTML file.
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;form id="greeting-form"&gt;
+    &lt;label for="name-input"&gt;Enter your name:&lt;/label&gt;
+    &lt;input type="text" id="name-input" required&gt;
+    &lt;button type="submit" class="btn"&gt;Say Hello&lt;/button&gt;
+&lt;/form&gt;
+&lt;div id="greeting-output"&gt;&lt;/div&gt;</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>const form = document.getElementById('greeting-form');
+const nameInput = document.getElementById('name-input');
+const outputDiv = document.getElementById('greeting-output');
+
+form.addEventListener('submit', (event) => {
+    // Prevent the form from submitting the traditional way
+    event.preventDefault();
+
+    // Get the value from the input field
+    const name = nameInput.value;
+
+    // Display the greeting
+    outputDiv.textContent = `Hello, ${name}!`;
+
+    // Optional: Clear the input field
+    nameInput.value = '';
+});</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <script>
+      const form = document.getElementById("greeting-form");
+      const nameInput = document.getElementById("name-input");
+      const outputDiv = document.getElementById("greeting-output");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const name = nameInput.value;
+        outputDiv.textContent = `Hello, ${name}!`;
+        nameInput.value = "";
+      });
+    </script>
+  </body>
+</html>

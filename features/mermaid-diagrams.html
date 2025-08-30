@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Interactive Diagrams with Mermaid.js - Getting Interactive with GitHub
+      Pages
+    </title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="mermaid-intro">
+          <h2>Interactive Diagrams with Mermaid.js</h2>
+          <p>
+            Adding diagrams to your documentation or blog posts can make complex
+            ideas much easier to understand.
+            <a href="https://mermaid-js.github.io/mermaid/#/" target="_blank"
+              >Mermaid.js</a
+            >
+            is a fantastic library that lets you create beautiful diagrams and
+            charts from simple, text-based syntax, similar to Markdown.
+          </p>
+          <p>
+            By including the library from a CDN, you can render flowcharts,
+            sequence diagrams, Gantt charts, and more, right in the browser.
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <textarea
+            id="mermaid-input"
+            style="
+              width: 100%;
+              box-sizing: border-box;
+              height: 150px;
+              font-family: monospace;
+            "
+          ></textarea>
+          <button id="render-btn" class="btn">Render Diagram</button>
+          <div
+            id="mermaid-output"
+            style="margin-top: 20px; text-align: center"
+          ></div>
+          <div id="mermaid-error" style="color: red; margin-top: 10px"></div>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            Include the Mermaid.js script from a CDN, then use its API to render
+            your diagram definition.
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;!-- Include Mermaid.js from a CDN --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.min.js"&gt;&lt;/script&gt;
+
+&lt;textarea id="mermaid-input"&gt;&lt;/textarea&gt;
+&lt;button id="render-btn" class="btn"&gt;Render Diagram&lt;/button&gt;
+&lt;div id="mermaid-output"&gt;&lt;/div&gt;
+&lt;div id="mermaid-error"&gt;&lt;/div&gt;</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>// Initialize Mermaid.js
+mermaid.initialize({ startOnLoad: false });
+
+const mermaidInput = document.getElementById('mermaid-input');
+const renderBtn = document.getElementById('render-btn');
+const mermaidOutput = document.getElementById('mermaid-output');
+const errorDiv = document.getElementById('mermaid-error');
+
+const renderDiagram = async () => {
+    errorDiv.textContent = '';
+    mermaidOutput.innerHTML = 'Rendering...';
+    const definition = mermaidInput.value;
+
+    try {
+        // A unique ID is needed for each render
+        const uniqueId = `mermaid-graph-${Date.now()}`;
+        const { svg, bindFunctions } = await mermaid.render(uniqueId, definition);
+        mermaidOutput.innerHTML = svg;
+        if (bindFunctions) {
+            bindFunctions(mermaidOutput);
+        }
+    } catch (error) {
+        mermaidOutput.innerHTML = '';
+        errorDiv.textContent = error;
+    }
+};
+
+renderBtn.addEventListener('click', renderDiagram);
+
+// Default diagram
+mermaidInput.value = `graph TD
+    A[Start] --&gt; B{Is it interactive?};
+    B --&gt;|Yes| C[Awesome!];
+    B --&gt;|No| D[Add some JS!];
+    C --&gt; E[End];
+    D --&gt; E[End];`;
+
+renderDiagram();
+</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <!-- Include Mermaid.js from a CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.min.js"></script>
+    <script>
+      // Initialize Mermaid.js
+      mermaid.initialize({ startOnLoad: false, theme: "default" });
+
+      const mermaidInput = document.getElementById("mermaid-input");
+      const renderBtn = document.getElementById("render-btn");
+      const mermaidOutput = document.getElementById("mermaid-output");
+      const errorDiv = document.getElementById("mermaid-error");
+
+      const renderDiagram = async () => {
+        errorDiv.textContent = "";
+        mermaidOutput.innerHTML = "Rendering...";
+        const definition = mermaidInput.value;
+
+        try {
+          // A unique ID is needed for each render
+          const uniqueId = `mermaid-graph-${Date.now()}`;
+          const { svg, bindFunctions } = await mermaid.render(
+            uniqueId,
+            definition
+          );
+          mermaidOutput.innerHTML = svg;
+          if (bindFunctions) {
+            bindFunctions(mermaidOutput);
+          }
+        } catch (error) {
+          mermaidOutput.innerHTML = "";
+          errorDiv.textContent = String(error);
+        }
+      };
+
+      renderBtn.addEventListener("click", renderDiagram);
+
+      // Default diagram
+      mermaidInput.value = `graph TD
+    A[Start] --&gt; B{Is it interactive?};
+    B --&gt;|Yes| C[Awesome!];
+    B --&gt;|No| D[Add some JS!];
+    C --&gt; E[End];
+    D --&gt; E[End];`;
+
+      renderDiagram();
+    </script>
+  </body>
+</html>

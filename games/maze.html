@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maze Navigation - Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .game-container {
+        text-align: center;
+      }
+      #maze-container {
+        display: grid;
+        border: 2px solid var(--text-color);
+        margin: 20px auto;
+        width: fit-content;
+      }
+      .maze-cell {
+        width: 30px;
+        height: 30px;
+      }
+      .wall {
+        background-color: var(--text-color);
+      }
+      .path {
+        background-color: var(--bg-color);
+      }
+      .player {
+        background-color: #007bff;
+      }
+      .goal {
+        background-color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Maze Navigation</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Games</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="game-container">
+          <p>Use the arrow keys to navigate from blue to green.</p>
+          <div id="maze-container"></div>
+          <button id="restart-btn" class="btn" style="margin-top: 20px">
+            Reset Game
+          </button>
+        </div>
+        <section id="explanation" style="margin-top: 40px">
+          <h3>How it Works</h3>
+          <p>
+            A simple maze is generated using a 2D array where 'W' represents a
+            wall and 'P' represents a path. This array is rendered as a grid
+            using CSS. The player's position is tracked with coordinates. An
+            event listener for the 'keydown' event checks for arrow key presses.
+            When a key is pressed, the game logic checks if the target cell is a
+            wall. If not, the player's position is updated, and the grid is
+            re-rendered.
+          </p>
+          <h4>The Code</h4>
+          <pre><code>&lt;!-- HTML --&gt;
+&lt;div id="maze-container"&gt;&lt;/div&gt;
+&lt;button id="restart-btn" class="btn"&gt;Reset Game&lt;/button&gt;
+</code></pre>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+    <script>
+      const mazeContainer = document.getElementById("maze-container");
+      const restartBtn = document.getElementById("restart-btn");
+
+      const mazeLayout = [
+        ["W", "W", "W", "W", "W", "W", "W", "W", "W", "W"],
+        ["S", "P", "P", "W", "P", "P", "P", "W", "P", "W"],
+        ["W", "W", "P", "W", "P", "W", "P", "W", "P", "W"],
+        ["W", "P", "P", "P", "P", "W", "P", "P", "P", "W"],
+        ["W", "P", "W", "W", "W", "W", "W", "W", "P", "W"],
+        ["W", "P", "P", "P", "P", "P", "P", "P", "P", "W"],
+        ["W", "W", "W", "W", "P", "W", "W", "P", "W", "W"],
+        ["W", "P", "P", "P", "P", "W", "P", "P", "P", "G"],
+        ["W", "W", "W", "W", "W", "W", "W", "W", "W", "W"],
+      ];
+
+      let playerPos; // Will be set in resetGame
+
+      function findStart() {
+        for (let y = 0; y < mazeLayout.length; y++) {
+          for (let x = 0; x < mazeLayout[y].length; x++) {
+            if (mazeLayout[y][x] === "S") return { x, y };
+          }
+        }
+        return { x: 0, y: 0 }; // Fallback
+      }
+
+      function drawMaze() {
+        mazeContainer.innerHTML = "";
+        mazeContainer.style.gridTemplateColumns = `repeat(${mazeLayout[0].length}, 30px)`;
+        for (let y = 0; y < mazeLayout.length; y++) {
+          for (let x = 0; x < mazeLayout[y].length; x++) {
+            const cell = document.createElement("div");
+            cell.classList.add("maze-cell");
+            if (y === playerPos.y && x === playerPos.x) {
+              cell.classList.add("player");
+            } else if (mazeLayout[y][x] === "W") {
+              cell.classList.add("wall");
+            } else if (mazeLayout[y][x] === "G") {
+              cell.classList.add("goal");
+            } else {
+              cell.classList.add("path");
+            }
+            mazeContainer.appendChild(cell);
+          }
+        }
+      }
+
+      function handleKeyPress(e) {
+        let { x, y } = playerPos;
+        switch (e.key) {
+          case "ArrowUp":
+            y--;
+            break;
+          case "ArrowDown":
+            y++;
+            break;
+          case "ArrowLeft":
+            x--;
+            break;
+          case "ArrowRight":
+            x++;
+            break;
+          default:
+            return;
+        }
+
+        e.preventDefault(); // Prevent page scrolling
+
+        if (
+          y >= 0 &&
+          y < mazeLayout.length &&
+          x >= 0 &&
+          x < mazeLayout[0].length &&
+          mazeLayout[y][x] !== "W"
+        ) {
+          playerPos = { x, y };
+          drawMaze();
+          if (mazeLayout[y][x] === "G") {
+            setTimeout(() => {
+              alert("You win!");
+              resetGame();
+            }, 100);
+          }
+        }
+      }
+
+      function resetGame() {
+        playerPos = findStart();
+        drawMaze();
+      }
+
+      document.addEventListener("keydown", handleKeyPress);
+      restartBtn.addEventListener("click", resetGame);
+      resetGame(); // Initial setup
+    </script>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown Usage - Getting Interactive with GitHub Pages</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Using Markdown for Content</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../features/forms.html">Forms</a></li>
+          <li><a href="../features/live-js-runner.html">JS Runner</a></li>
+          <li><a href="../features/theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="../features/notes-app.html">Notes App</a></li>
+          <li><a href="../features/filter-search.html">Filter & Search</a></li>
+          <li>
+            <a href="../features/markdown-converter.html">Markdown Converter</a>
+          </li>
+          <li><a href="../features/json-viewer.html">JSON Viewer</a></li>
+          <li>
+            <a href="../features/mermaid-diagrams.html">Mermaid Diagrams</a>
+          </li>
+          <li><a href="../features/clipboard.html">Clipboard API</a></li>
+          <li><a href="../features/drag-drop.html">Drag & Drop</a></li>
+          <li><a href="../features/spa-routing.html">SPA Routing</a></li>
+          <li><a href="../features/page-state.html">Page State</a></li>
+          <li><a href="../features/browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="best-practices.html">Best Practices</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <section>
+          <h2>What is Markdown?</h2>
+          <p>
+            Markdown is a lightweight markup language with plain-text-formatting
+            syntax. Its main goal is to be as readable as possible, even in its
+            raw form. It's a simple way to write and format articles,
+            documentation, and messages.
+          </p>
+          <pre><code># This is a heading
+
+This is a paragraph with some **bold** and *italic* text.
+
+- This is a list item.
+- So is this.</code></pre>
+        </section>
+        <section>
+          <h2>Why Use Markdown on a Static Site?</h2>
+          <ul>
+            <li>
+              <strong>Simplicity:</strong> It's much easier and faster to write
+              content in Markdown than in raw HTML.
+            </li>
+            <li>
+              <strong>Portability:</strong> Markdown files are just plain text,
+              so they can be opened and edited by any text editor.
+            </li>
+            <li>
+              <strong>GitHub Native:</strong> GitHub renders Markdown files
+              automatically, making it the standard for READMEs and
+              documentation in repositories.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Live Conversion</h2>
+          <p>
+            As you've seen on our
+            <a href="../features/markdown-converter.html">Markdown Converter</a>
+            page, you can use a JavaScript library to convert Markdown to HTML
+            directly in the browser. This means you can write your content in
+            simple <code>.md</code> files and then use a script to fetch and
+            render them on your site, creating a very simple Content Management
+            System (CMS) without a backend.
+          </p>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+  </body>
+</html>

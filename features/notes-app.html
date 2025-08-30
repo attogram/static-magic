@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Persistent Notes App - Getting Interactive with GitHub Pages</title>
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      #note-input {
+        width: 100%;
+        box-sizing: border-box;
+        height: 100px;
+      }
+      #notes-list {
+        list-style: none;
+        padding: 0;
+      }
+      #notes-list li {
+        background-color: var(--nav-bg);
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        word-break: break-word;
+      }
+      .delete-btn {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="notes-intro">
+          <h2>Persistent Notes App with localStorage</h2>
+          <p>
+            Want to save user data without a server? The browser's
+            <code>localStorage</code> API is the perfect tool for the job. It
+            allows you to save key-value pairs that persist even after the
+            browser window is closed.
+          </p>
+          <p>
+            This makes it ideal for creating simple applications like to-do
+            lists, settings panels, and, as we'll demonstrate here, a persistent
+            notes app.
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <textarea
+            id="note-input"
+            placeholder="Write a new note..."
+          ></textarea>
+          <button id="add-note-btn" class="btn">Add Note</button>
+          <h3>Your Notes:</h3>
+          <ul id="notes-list"></ul>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            We need HTML for the interface and JavaScript to manage the notes.
+            The core logic involves reading from and writing to
+            <code>localStorage</code>.
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;textarea id="note-input" placeholder="Write a new note..."&gt;&lt;/textarea&gt;
+&lt;button id="add-note-btn" class="btn"&gt;Add Note&lt;/button&gt;
+&lt;h3&gt;Your Notes:&lt;/h3&gt;
+&lt;ul id="notes-list"&gt;&lt;/ul&gt;</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>const noteInput = document.getElementById('note-input');
+const addNoteBtn = document.getElementById('add-note-btn');
+const notesList = document.getElementById('notes-list');
+
+// Load notes from localStorage
+let notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+// Function to render notes
+const renderNotes = () => {
+    notesList.innerHTML = '';
+    // Render in reverse order to show newest first
+    notes.slice().reverse().forEach((noteText, index) => {
+        const li = document.createElement('li');
+        // This is the original index in the 'notes' array
+        const originalIndex = notes.length - 1 - index;
+
+        // Sanitize note text before displaying to prevent HTML injection
+        const sanitizedText = noteText.replace(/&/g, '&amp;').replace(/<\/g, '&lt;').replace(/>/g, '&gt;');
+
+        li.innerHTML = `
+            &lt;span&gt;${sanitizedText}&lt;/span&gt;
+            &lt;button class="delete-btn" data-index="${originalIndex}"&gt;Delete&lt;/button&gt;
+        `;
+        notesList.appendChild(li);
+    });
+};
+
+// Function to save notes
+const saveNotes = () => {
+    localStorage.setItem('notes', JSON.stringify(notes));
+};
+
+// Add note event
+addNoteBtn.addEventListener('click', () => {
+    const newNote = noteInput.value.trim();
+    if (newNote) {
+        notes.push(newNote);
+        saveNotes();
+        renderNotes();
+        noteInput.value = '';
+    }
+});
+
+// Delete note event (using event delegation)
+notesList.addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-btn')) {
+        const index = parseInt(event.target.getAttribute('data-index'), 10);
+        notes.splice(index, 1);
+        saveNotes();
+        renderNotes();
+    }
+});
+
+// Initial render
+renderNotes();</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <script>
+      const noteInput = document.getElementById("note-input");
+      const addNoteBtn = document.getElementById("add-note-btn");
+      const notesList = document.getElementById("notes-list");
+
+      // Load notes from localStorage
+      let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+      // Function to render notes
+      const renderNotes = () => {
+        notesList.innerHTML = "";
+        // Render in reverse order to show newest first
+        notes
+          .slice()
+          .reverse()
+          .forEach((noteText, index) => {
+            const li = document.createElement("li");
+            // This is the original index in the 'notes' array
+            const originalIndex = notes.length - 1 - index;
+
+            // Sanitize note text before displaying to prevent HTML injection
+            const sanitizedText = noteText
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
+
+            li.innerHTML = `
+                    <span>${sanitizedText}</span>
+                    <button class="delete-btn" data-index="${originalIndex}">Delete</button>
+                `;
+            notesList.appendChild(li);
+          });
+      };
+
+      // Function to save notes
+      const saveNotes = () => {
+        localStorage.setItem("notes", JSON.stringify(notes));
+      };
+
+      // Add note event
+      addNoteBtn.addEventListener("click", () => {
+        const newNote = noteInput.value.trim();
+        if (newNote) {
+          notes.push(newNote);
+          saveNotes();
+          renderNotes();
+          noteInput.value = "";
+        }
+      });
+
+      // Delete note event (using event delegation)
+      notesList.addEventListener("click", (event) => {
+        if (event.target.classList.contains("delete-btn")) {
+          const index = parseInt(event.target.getAttribute("data-index"), 10);
+          notes.splice(index, 1);
+          saveNotes();
+          renderNotes();
+        }
+      });
+
+      // Initial render
+      renderNotes();
+    </script>
+  </body>
+</html>

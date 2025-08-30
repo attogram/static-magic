@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clicker Game - Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .game-container {
+        max-width: 600px;
+        margin: auto;
+        text-align: center;
+        background-color: var(--nav-bg);
+        padding: 20px;
+        border-radius: 10px;
+      }
+      #clicker-btn {
+        font-size: 2rem;
+        padding: 20px 40px;
+        margin: 20px 0;
+        cursor: pointer;
+      }
+      #score {
+        font-size: 2.5rem;
+        font-weight: bold;
+      }
+      #upgrade-btn {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Clicker Game</h1>
+      </div>
+    </header>
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Games</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="game-container">
+          <p id="score">Score: 0</p>
+          <button id="clicker-btn" class="btn">Click Me!</button>
+          <div>
+            <button id="upgrade-btn" class="btn">
+              Upgrade Click (Cost: 10)
+            </button>
+            <p>Points per click: <span id="click-power">1</span></p>
+          </div>
+        </div>
+        <section id="explanation" style="margin-top: 40px">
+          <h3>How it Works</h3>
+          <p>
+            This is a simple clicker game. Click the button to increase your
+            score. You can spend your score to buy upgrades, which increase the
+            number of points you get per click. Your score and upgrade level are
+            saved in your browser's <code>localStorage</code>, so you can close
+            the page and come back to it later!
+          </p>
+          <h4>The Code</h4>
+          <pre><code>&lt;!-- HTML --&gt;
+&lt;div class="game-container"&gt;
+    &lt;p id="score"&gt;Score: 0&lt;/p&gt;
+    &lt;button id="clicker-btn" class="btn"&gt;Click Me!&lt;/button&gt;
+    &lt;div&gt;
+        &lt;button id="upgrade-btn" class="btn"&gt;Upgrade Click (Cost: 10)&lt;/button&gt;
+        &lt;p&gt;Points per click: &lt;span id="click-power"&gt;1&lt;/span&gt;&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- JavaScript --&gt;
+const scoreDisplay = document.getElementById('score');
+const clickerBtn = document.getElementById('clicker-btn');
+const upgradeBtn = document.getElementById('upgrade-btn');
+const clickPowerDisplay = document.getElementById('click-power');
+
+let score = 0;
+let clickPower = 1;
+let upgradeCost = 10;
+
+function loadGame() {
+    const savedGame = JSON.parse(localStorage.getItem('clickerGame'));
+    if (savedGame) {
+        score = parseInt(savedGame.score, 10) || 0;
+        clickPower = parseInt(savedGame.clickPower, 10) || 1;
+        upgradeCost = parseInt(savedGame.upgradeCost, 10) || 10;
+    }
+    updateDisplay();
+}
+
+function saveGame() {
+    localStorage.setItem('clickerGame', JSON.stringify({ score, clickPower, upgradeCost }));
+}
+
+function updateDisplay() {
+    scoreDisplay.textContent = `Score: ${score}`;
+    clickPowerDisplay.textContent = clickPower;
+    upgradeBtn.textContent = `Upgrade Click (Cost: ${upgradeCost})`;
+    upgradeBtn.disabled = score < upgradeCost;
+}
+
+clickerBtn.addEventListener('click', () => {
+    score += clickPower;
+    updateDisplay();
+    saveGame();
+});
+
+upgradeBtn.addEventListener('click', () => {
+    if (score >= upgradeCost) {
+        score -= upgradeCost;
+        clickPower++;
+        upgradeCost = Math.ceil(upgradeCost * 1.5);
+        updateDisplay();
+        saveGame();
+    }
+});
+
+loadGame();
+</code></pre>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+    <script src="../script.js"></script>
+    <script>
+      const scoreDisplay = document.getElementById("score");
+      const clickerBtn = document.getElementById("clicker-btn");
+      const upgradeBtn = document.getElementById("upgrade-btn");
+      const clickPowerDisplay = document.getElementById("click-power");
+
+      let score = 0;
+      let clickPower = 1;
+      let upgradeCost = 10;
+
+      function loadGame() {
+        const savedGame = JSON.parse(localStorage.getItem("clickerGame"));
+        if (savedGame) {
+          score = parseInt(savedGame.score, 10) || 0;
+          clickPower = parseInt(savedGame.clickPower, 10) || 1;
+          upgradeCost = parseInt(savedGame.upgradeCost, 10) || 10;
+        }
+        updateDisplay();
+      }
+
+      function saveGame() {
+        localStorage.setItem(
+          "clickerGame",
+          JSON.stringify({ score, clickPower, upgradeCost })
+        );
+      }
+
+      function updateDisplay() {
+        scoreDisplay.textContent = `Score: ${score}`;
+        clickPowerDisplay.textContent = clickPower;
+        upgradeBtn.textContent = `Upgrade Click (Cost: ${upgradeCost})`;
+        upgradeBtn.disabled = score < upgradeCost;
+      }
+
+      clickerBtn.addEventListener("click", () => {
+        score += clickPower;
+        updateDisplay();
+        saveGame();
+      });
+
+      upgradeBtn.addEventListener("click", () => {
+        if (score >= upgradeCost) {
+          score -= upgradeCost;
+          clickPower++;
+          upgradeCost = Math.ceil(upgradeCost * 1.5);
+          updateDisplay();
+          saveGame();
+        }
+      });
+
+      loadGame();
+    </script>
+  </body>
+</html>

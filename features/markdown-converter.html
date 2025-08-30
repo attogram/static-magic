@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Markdown to HTML Converter - Getting Interactive with GitHub Pages
+    </title>
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      .converter-container {
+        display: flex;
+        gap: 20px;
+      }
+      #markdown-input,
+      #html-output {
+        width: 50%;
+        height: 400px;
+        box-sizing: border-box;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+      }
+      #markdown-input {
+        font-family: monospace;
+      }
+      #html-output {
+        background-color: var(--bg-color);
+        overflow-y: auto;
+      }
+      #html-output :first-child {
+        margin-top: 0;
+      }
+      @media (max-width: 768px) {
+        .converter-container {
+          flex-direction: column;
+        }
+        #markdown-input,
+        #html-output {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="markdown-intro">
+          <h2>Live Markdown to HTML Converter</h2>
+          <p>
+            Markdown is a popular way to write formatted text. With a
+            client-side JavaScript library, you can easily convert Markdown into
+            HTML in real-time, creating a live preview editor.
+          </p>
+          <p>
+            For this demo, we're using a library called
+            <a href="https://showdownjs.com/" target="_blank">Showdown.js</a>,
+            included from a CDN (Content Delivery Network). This means we don't
+            need to host the library ourselves.
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <div class="converter-container">
+            <textarea id="markdown-input"></textarea>
+            <div id="html-output"></div>
+          </div>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            You'll need to include the Showdown.js library from a CDN in your
+            HTML, then write a short script to tie it to your input and output
+            elements.
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;!-- Include Showdown.js from a CDN --&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"&gt;&lt;/script&gt;
+
+&lt;div class="converter-container"&gt;
+    &lt;textarea id="markdown-input"&gt;&lt;/textarea&gt;
+    &lt;div id="html-output"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>const markdownInput = document.getElementById('markdown-input');
+const htmlOutput = document.getElementById('html-output');
+
+// Create a new Showdown converter with some options
+const converter = new showdown.Converter({
+    tables: true,
+    strikethrough: true,
+    tasklists: true,
+    simpleLineBreaks: true
+});
+
+// Function to update the output
+const updateOutput = () => {
+    const markdownText = markdownInput.value;
+    const html = converter.makeHtml(markdownText);
+    htmlOutput.innerHTML = html;
+};
+
+// Listen for input events on the textarea
+markdownInput.addEventListener('input', updateOutput);
+
+// Set some default text and do an initial conversion
+markdownInput.value = "# Hello, Markdown!\\n\\nType some **Markdown** here.\\n\\n* List item 1\\n* List item 2";
+updateOutput();
+</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <!-- Include Showdown.js from a CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+    <script>
+      const markdownInput = document.getElementById("markdown-input");
+      const htmlOutput = document.getElementById("html-output");
+
+      // Create a new Showdown converter with some common options
+      const converter = new showdown.Converter({
+        tables: true,
+        strikethrough: true,
+        tasklists: true,
+        simpleLineBreaks: true,
+      });
+
+      // Function to update the output
+      const updateOutput = () => {
+        const markdownText = markdownInput.value;
+        const html = converter.makeHtml(markdownText);
+        htmlOutput.innerHTML = html;
+      };
+
+      // Listen for input events on the textarea
+      markdownInput.addEventListener("input", updateOutput);
+
+      // Set some default text and do an initial conversion
+      markdownInput.value =
+        "# Hello, Markdown!\\n\\nType some **Markdown** here.\\n\\n* List item 1\\n* List item 2\\n\\n`Here is some code`";
+      updateOutput();
+    </script>
+  </body>
+</html>

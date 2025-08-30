@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      JSON Viewer / Formatter - Getting Interactive with GitHub Pages
+    </title>
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      #json-input {
+        width: 100%;
+        height: 200px;
+        box-sizing: border-box;
+        font-family: monospace;
+      }
+      #json-output {
+        background-color: var(--code-bg);
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid var(--border-color);
+        white-space: pre;
+        overflow-x: auto;
+        font-family: monospace;
+      }
+      .json-key {
+        color: #bb86fc;
+      } /* A color for keys */
+      .json-string {
+        color: #03dac6;
+      } /* A color for strings */
+      .json-number {
+        color: #cf6679;
+      } /* A color for numbers */
+      .json-boolean {
+        color: #ffab40;
+      } /* A color for booleans */
+      .json-null {
+        color: #b0bec5;
+      } /* A color for null */
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Getting Interactive with GitHub Pages</h1>
+        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
+      </div>
+    </header>
+
+    <nav>
+      <div class="container">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="forms.html">Forms</a></li>
+          <li><a href="live-js-runner.html">JS Runner</a></li>
+          <li><a href="theme-switcher.html">Theme Switcher</a></li>
+          <li><a href="notes-app.html">Notes App</a></li>
+          <li><a href="filter-search.html">Filter & Search</a></li>
+          <li><a href="markdown-converter.html">Markdown Converter</a></li>
+          <li><a href="json-viewer.html">JSON Viewer</a></li>
+          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
+          <li><a href="clipboard.html">Clipboard API</a></li>
+          <li><a href="drag-drop.html">Drag & Drop</a></li>
+          <li><a href="spa-routing.html">SPA Routing</a></li>
+          <li><a href="page-state.html">Page State</a></li>
+          <li><a href="browser-apis.html">Browser APIs</a></li>
+          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
+          <li><a href="../games/index.html">Games</a></li>
+          <li><a href="../guides/best-practices.html">Best Practices</a></li>
+          <li><a href="../guides/resources.html">Resources</a></li>
+          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <section id="json-intro">
+          <h2>JSON Viewer and Formatter</h2>
+          <p>
+            Working with JSON is a daily task for many developers. A simple
+            in-browser tool to quickly format and inspect JSON can be very
+            handy. This can be built easily using JavaScript's built-in
+            <code>JSON</code> object.
+          </p>
+          <p>
+            We'll use <code>JSON.parse()</code> to validate the input and
+            <code>JSON.stringify()</code> to pretty-print it. For a better
+            experience, we'll also add some basic syntax highlighting using
+            regular expressions.
+          </p>
+        </section>
+
+        <section id="live-demo">
+          <h3>Live Demo</h3>
+          <textarea
+            id="json-input"
+            placeholder="Paste your JSON here..."
+          ></textarea>
+          <button id="format-btn" class="btn">Format JSON</button>
+          <pre id="json-output"></pre>
+        </section>
+
+        <section id="code-snippet">
+          <h3>The Code</h3>
+          <p>
+            The core logic is small, with the syntax highlighting being the most
+            complex part.
+          </p>
+
+          <h4>HTML</h4>
+          <pre><code>&lt;textarea id="json-input" placeholder="Paste your JSON here..."&gt;&lt;/textarea&gt;
+&lt;button id="format-btn" class="btn"&gt;Format JSON&lt;/button&gt;
+&lt;pre id="json-output"&gt;&lt;/pre&gt;</code></pre>
+
+          <h4>CSS (for Syntax Highlighting)</h4>
+          <pre><code>.json-key { color: #bb86fc; }
+.json-string { color: #03dac6; }
+.json-number { color: #cf6679; }
+.json-boolean { color: #ffab40; }
+.json-null { color: #b0bec5; }</code></pre>
+
+          <h4>JavaScript</h4>
+          <pre><code>const jsonInput = document.getElementById('json-input');
+const formatBtn = document.getElementById('format-btn');
+const jsonOutput = document.getElementById('json-output');
+
+function syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/<\/g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        let cls = 'json-number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'json-key';
+            } else {
+                cls = 'json-string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'json-boolean';
+        } else if (/null/.test(match)) {
+            cls = 'json-null';
+        }
+        return '&lt;span class="' + cls + '"&gt;' + match + '&lt;/span&gt;';
+    });
+}
+
+formatBtn.addEventListener('click', () => {
+    try {
+        const jsonObj = JSON.parse(jsonInput.value);
+        const prettyJson = JSON.stringify(jsonObj, null, 4);
+        jsonOutput.innerHTML = syntaxHighlight(prettyJson);
+    } catch (error) {
+        jsonOutput.innerHTML = `&lt;span style="color: red;"&gt;Invalid JSON: ${error.message}&lt;/span&gt;`;
+    }
+});
+
+// Set some default JSON and format it on page load
+jsonInput.value = '{\n  "name": "Jules",\n  "isAgent": true,\n  "skills": ["HTML", "CSS", "JavaScript"],\n  "experience": null\n}';
+formatBtn.click(); // Trigger a click to format the default JSON
+</code></pre>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Created with ❤️ and vanilla JS. Fork this project on
+          <a href="https://github.com/attogram/static-magic" target="_blank"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <button id="theme-switcher" class="btn">Dark Mode</button>
+
+    <script src="../script.js"></script>
+    <script>
+      const jsonInput = document.getElementById("json-input");
+      const formatBtn = document.getElementById("format-btn");
+      const jsonOutput = document.getElementById("json-output");
+
+      function syntaxHighlight(json) {
+        json = json
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+        return json.replace(
+          /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+          function (match) {
+            let cls = "json-number";
+            if (/^"/.test(match)) {
+              if (/:$/.test(match)) {
+                cls = "json-key";
+              } else {
+                cls = "json-string";
+              }
+            } else if (/true|false/.test(match)) {
+              cls = "json-boolean";
+            } else if (/null/.test(match)) {
+              cls = "json-null";
+            }
+            return '<span class="' + cls + '">' + match + "</span>";
+          }
+        );
+      }
+
+      function formatAndHighlight() {
+        try {
+          const jsonObj = JSON.parse(jsonInput.value);
+          const prettyJson = JSON.stringify(jsonObj, null, 4);
+          jsonOutput.innerHTML = syntaxHighlight(prettyJson);
+        } catch (error) {
+          jsonOutput.innerHTML = `<span style="color: red;">Invalid JSON: ${error.message}</span>`;
+        }
+      }
+
+      formatBtn.addEventListener("click", formatAndHighlight);
+
+      // Set some default JSON and format it on page load
+      jsonInput.value =
+        '{\n  "name": "Jules",\n  "isAgent": true,\n  "skills": ["HTML", "CSS", "JavaScript"],\n  "experience": null\n}';
+      formatAndHighlight();
+    </script>
+  </body>
+</html>
