@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Typing Speed Test - Games</title>
-    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="style.css" />
     <style>
       .game-container {
@@ -42,19 +42,8 @@
     </style>
   </head>
   <body>
-    <header>
-      <div class="container">
-        <h1>Typing Speed Test</h1>
-      </div>
-    </header>
-    <nav>
-      <div class="container">
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="index.html">Games</a></li>
-        </ul>
-      </div>
-    </nav>
+    <header id="main-header"></header>
+    <nav id="main-nav"></nav>
     <main>
       <div class="container">
         <div class="game-container">
@@ -83,18 +72,9 @@
         </section>
       </div>
     </main>
-    <footer>
-      <div class="container">
-        <p>
-          Created with ❤️ and vanilla JS. Fork this project on
-          <a href="https://github.com/attogram/static-magic" target="_blank"
-            >GitHub</a
-          >.
-        </p>
-      </div>
-    </footer>
+    <footer id="main-footer"></footer>
     <button id="theme-switcher" class="btn">Dark Mode</button>
-    <script src="../script.js"></script>
+    <script src="/script.js"></script>
     <script>
       const sampleTextDisplay = document.getElementById("sample-text");
       const typingInput = document.getElementById("typing-input");

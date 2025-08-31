@@ -14,4 +14,5 @@ This directory contains the documentation for the `base` project.
 - **[Standard Repository Files](./standard-files.md)**: An explanation of the standard configuration files like `.gitignore`, `.editorconfig`, and `.gitattributes`.
 - **[Using Prettier](./prettier.md)**: A guide to installing and using Prettier for code formatting.
 - **[Repository Badges](./badges.md)**: An explanation of how to use and create repository badges.
+- **[Frontend Architecture](./frontend-architecture.md)**: An overview of the frontend architecture, including the shared component system.
 - **[Maintaining `base` as a Template Repository](./template-repo.md)**: A guide for maintainers of this template, outlining best practices and administrative steps.
