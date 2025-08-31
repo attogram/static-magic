@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Drag and Drop UI - Getting Interactive with GitHub Pages</title>
-    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <style>
       .drop-lanes {
         display: flex;
@@ -36,38 +36,9 @@
     </style>
   </head>
   <body>
-    <header>
-      <div class="container">
-        <h1>Getting Interactive with GitHub Pages</h1>
-        <p>Frontend magic for GitHub Pages - zero backend, pure fun!</p>
-      </div>
-    </header>
+    <header id="main-header"></header>
 
-    <nav>
-      <div class="container">
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="forms.html">Forms</a></li>
-          <li><a href="live-js-runner.html">JS Runner</a></li>
-          <li><a href="theme-switcher.html">Theme Switcher</a></li>
-          <li><a href="notes-app.html">Notes App</a></li>
-          <li><a href="filter-search.html">Filter & Search</a></li>
-          <li><a href="markdown-converter.html">Markdown Converter</a></li>
-          <li><a href="json-viewer.html">JSON Viewer</a></li>
-          <li><a href="mermaid-diagrams.html">Mermaid Diagrams</a></li>
-          <li><a href="clipboard.html">Clipboard API</a></li>
-          <li><a href="drag-drop.html">Drag & Drop</a></li>
-          <li><a href="spa-routing.html">SPA Routing</a></li>
-          <li><a href="page-state.html">Page State</a></li>
-          <li><a href="browser-apis.html">Browser APIs</a></li>
-          <li><a href="../tools/tech-tools.html">Tech Tools</a></li>
-          <li><a href="../games/index.html">Games</a></li>
-          <li><a href="../guides/best-practices.html">Best Practices</a></li>
-          <li><a href="../guides/resources.html">Resources</a></li>
-          <li><a href="../guides/markdown-usage.html">Markdown Usage</a></li>
-        </ul>
-      </div>
-    </nav>
+    <nav id="main-nav"></nav>
 
     <main>
       <div class="container">
@@ -167,20 +138,11 @@ lanes.forEach(lane => {
       </div>
     </main>
 
-    <footer>
-      <div class="container">
-        <p>
-          Created with ❤️ and vanilla JS. Fork this project on
-          <a href="https://github.com/attogram/static-magic" target="_blank"
-            >GitHub</a
-          >.
-        </p>
-      </div>
-    </footer>
+    <footer id="main-footer"></footer>
 
     <button id="theme-switcher" class="btn">Dark Mode</button>
 
-    <script src="../script.js"></script>
+    <script src="/script.js"></script>
     <script>
       const draggables = document.querySelectorAll(".draggable");
       const lanes = document.querySelectorAll(".lane");

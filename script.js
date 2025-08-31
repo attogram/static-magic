@@ -35,4 +35,49 @@ document.addEventListener("DOMContentLoaded", () => {
       themeSwitcher.textContent = theme === "dark" ? "Light Mode" : "Dark Mode";
     });
   }
+
+  // Function to load HTML components
+  const loadComponent = async (url, elementId) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+      }
+      const text = await response.text();
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.innerHTML = text;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Load shared components and then initialize dependent scripts
+  const initializePage = async () => {
+    // Define components to load
+    const components = [
+      { url: "/_header.html", id: "main-header" },
+      { url: "/_nav.html", id: "main-nav" },
+      { url: "/_footer.html", id: "main-footer" },
+    ];
+
+    // Load all components in parallel
+    await Promise.all(components.map((c) => loadComponent(c.url, c.id)));
+
+    // Once components are loaded, initialize scripts that depend on them
+    // Hamburger menu toggle
+    const navToggle = document.getElementById("nav-toggle");
+    const navLinks = document.querySelector(".nav-links");
+
+    if (navToggle && navLinks) {
+      navToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        navToggle.classList.toggle("active");
+      });
+    }
+  };
+
+  // Initialize the page
+  initializePage();
 });
