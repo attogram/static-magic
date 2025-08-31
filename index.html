@@ -16,7 +16,11 @@
 
     <nav>
       <div class="container">
-        <ul>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="hamburger"></span>
+        </label>
+        <ul class="nav-links">
           <li><a href="index.html">Home</a></li>
           <li><a href="features/forms.html">Forms</a></li>
           <li><a href="features/live-js-runner.html">JS Runner</a></li>
@@ -105,11 +109,17 @@
 
     <footer>
       <div class="container">
+        <p>&copy; 2024 Static Magic. All rights reserved.</p>
         <p>
-          Created with ❤️ and vanilla JS. Fork this project on
-          <a href="https://github.com/attogram/static-magic" target="_blank"
+          <a
+            href="https://github.com/attogram/static-magic"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
-          >.
+          >
+          | <a href="/index.html">Home</a> |
+          <a href="/guides/best-practices.html">Best Practices</a> |
+          <a href="/LICENSE">License</a>
         </p>
       </div>
     </footer>

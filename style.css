@@ -177,14 +177,90 @@ code {
   z-index: 1000;
 }
 
+/* CSS-only Hamburger Menu */
+.nav-toggle-checkbox {
+  display: none;
+}
+
+.nav-toggle-label {
+  display: none; /* Hidden by default */
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  z-index: 1001;
+}
+
+.nav-toggle-label .hamburger,
+.nav-toggle-label .hamburger::before,
+.nav-toggle-label .hamburger::after {
+  display: block;
+  background-color: var(--text-color);
+  height: 3px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-toggle-label .hamburger::before,
+.nav-toggle-label .hamburger::after {
+  content: "";
+}
+
+.nav-toggle-label .hamburger::before {
+  top: -8px;
+}
+
+.nav-toggle-label .hamburger::after {
+  bottom: -8px;
+}
+
+nav .container {
+  position: relative;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
-  nav ul {
+  .nav-toggle-label {
+    display: block; /* Show hamburger icon on mobile */
+  }
+
+  .nav-links {
+    display: none;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    background-color: var(--nav-bg);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .nav-toggle-checkbox:checked ~ .nav-links {
+    display: flex; /* Show menu when checkbox is checked */
+  }
+
+  .nav-toggle-checkbox:checked + .nav-toggle-label .hamburger {
+    background-color: transparent; /* Hide middle bar */
+  }
+
+  .nav-toggle-checkbox:checked + .nav-toggle-label .hamburger::before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+
+  .nav-toggle-checkbox:checked + .nav-toggle-label .hamburger::after {
+    transform: rotate(-45deg);
+    top: 0;
   }
 
   header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 }
