@@ -57,9 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const initializePage = async () => {
     // Define components to load
     const components = [
-      { url: "/_header.html", id: "main-header" },
-      { url: "/_nav.html", id: "main-nav" },
-      { url: "/_footer.html", id: "main-footer" },
+      { url: "_header.html", id: "main-header" },
+      { url: "_nav.html", id: "main-nav" },
+      { url: "_footer.html", id: "main-footer" },
     ];
 
     // Load all components in parallel
